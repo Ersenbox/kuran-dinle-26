@@ -20,10 +20,14 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Naskh+Arabic:wght@400;700&family=Scheherazade+New:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        :root { --card:#fff; --panel:#f5f0e8; --panel2:#e3efe9; --text:#333; --muted:#666; --accent:#1a5c4e; --accent2:#2d7a6b; --arabic-font:'Amiri',serif; --zoom:1; --gold:#d4af37; --goldglow:rgba(224,164,88,.75); --surah-bg:#fdf3d7; --surah-item:#fffbe8; --juz-bg:#e3ecf7; --juz-item:#f2f7ff; }
-        body.dark { --card:#1b2422; --panel:#16201d; --panel2:#12241e; --text:#e6e6e6; --muted:#9fb3ad; --accent:#2d7a6b; --accent2:#3a917f; --surah-bg:#2a2410; --surah-item:#332c12; --juz-bg:#10202f; --juz-item:#16283a; }
+        :root { --card:#ffffff; --panel:#f5f0e8; --panel2:#e3efe9; --text:#333; --muted:#666; --accent:#1a5c4e; --accent2:#2d7a6b; --arabic-font:'Amiri',serif; --zoom:1; --gold:#d4af37; --goldglow:rgba(224,164,88,.75);
+            --surah-bg:#fdf3d7; --surah-item:#fffbe8; --juz-bg:#e3ecf7; --juz-item:#f2f7ff; }
+        body.dark { --card:#1b2422; --panel:#16201d; --panel2:#12241e; --text:#e6e6e6; --muted:#9fb3ad; --accent:#2d7a6b; --accent2:#3a917f;
+            --surah-bg:#2a2410; --surah-item:#332c12; --juz-bg:#10202f; --juz-item:#16283a; }
         * { margin:0; padding:0; box-sizing:border-box; }
-        body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Cg fill='none' stroke='%23ffffff' stroke-opacity='0.14'%3E%3Cpath d='M40 0L80 40L40 80L0 40Z'/%3E%3Ccircle cx='40' cy='40' r='14'/%3E%3C/g%3E%3C/svg%3E") repeat, linear-gradient(180deg,#072b23 0%,#1a5c4e 35%,#cbbfa8 100%); background-attachment:fixed; min-height:100vh; overflow-x:hidden; }
+        body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+            background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Cg fill='none' stroke='%23ffffff' stroke-opacity='0.14'%3E%3Cpath d='M40 0L80 40L40 80L0 40Z'/%3E%3Ccircle cx='40' cy='40' r='14'/%3E%3C/g%3E%3C/svg%3E") repeat, linear-gradient(180deg,#072b23 0%,#1a5c4e 35%,#cbbfa8 100%);
+            background-attachment:fixed; min-height:100vh; overflow-x:hidden; }
         body.dark { background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Cg fill='none' stroke='%23ffffff' stroke-opacity='0.07'%3E%3Cpath d='M40 0L80 40L40 80L0 40Z'/%3E%3Ccircle cx='40' cy='40' r='14'/%3E%3C/g%3E%3C/svg%3E") repeat, linear-gradient(180deg,#020403 0%,#0b352c 40%,#101413 100%); background-attachment:fixed; }
         .container { max-width:1200px; margin:0 auto; background:var(--card); min-height:100vh; box-shadow:0 0 30px rgba(0,0,0,.35); display:flex; flex-direction:column; }
         .main-content { padding:20px; flex:1; }
@@ -36,6 +40,7 @@
         .lang-menu.open { display:block; }
         .lang-item { display:flex; align-items:center; gap:10px; padding:12px 16px; cursor:pointer; color:var(--text); font-size:14px; }
         .lang-item .flag { font-size:20px; }
+        /* D1: otomatik skrol payı */
         #settingsPanel,#mealContainer,#latinContainer,#audioPlayer,#sajdaList,#searchPanel,#surahPanel,#juzPanel,#infoPanel,#qrPanel { scroll-margin-top:100px; }
         .page-nav { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; padding:15px; background:var(--panel); border-radius:12px; }
         .nav-btn { background:var(--accent); color:#fff; border:none; padding:12px 24px; border-radius:8px; cursor:pointer; font-size:16px; }
@@ -66,8 +71,10 @@
         .meal-container,.latin-container { background:var(--panel); border-radius:12px; padding:20px; margin-bottom:20px; }
         .list-panel { border-radius:12px; padding:20px; margin-bottom:20px; border:2px solid var(--accent); }
         #searchPanel { background:var(--panel2); }
+        /* D2: Sure = pastel sarı */
         #surahPanel { background:var(--surah-bg); border-color:#c9a227; }
         #surahPanel .list-item { background:var(--surah-item); border-left-color:#c9a227; }
+        /* D3: Cüz = pastel mavi */
         #juzPanel { background:var(--juz-bg); border-color:#4a7fb5; }
         #juzPanel .list-item { background:var(--juz-item); border-left-color:#4a7fb5; }
         .meal-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; padding-bottom:15px; border-bottom:2px solid var(--accent); flex-wrap:wrap; gap:10px; }
@@ -107,6 +114,7 @@
         .sajda-title { font-size:18px; font-weight:bold; color:var(--accent); margin-bottom:15px; }
         .sajda-item { background:var(--card); color:var(--text); padding:12px; border-radius:8px; margin-bottom:8px; cursor:pointer; border-left:4px solid var(--accent); }
         #offlineStatus { margin-top:8px; color:var(--muted); font-size:13px; }
+        /* E4 INFO */
         .info-card { background:var(--panel2); border:2px solid var(--accent); border-radius:12px; padding:20px; margin-bottom:20px; text-align:center; color:var(--text); }
         .info-card h3 { color:var(--accent); margin:10px 0; }
         .info-card .ar { font-family:var(--arabic-font); font-size:22px; direction:rtl; }
@@ -115,8 +123,10 @@
         .info-card .fatiha { color:#e0a458; font-weight:bold; font-size:18px; margin:10px 0; }
         .qr-box { text-align:center; }
         .qr-box img { background:#fff; padding:10px; border-radius:12px; }
-        .install-banner { position:fixed; bottom:15px; right:15px; left:15px; max-width:420px; margin:0 auto; z-index:1200; background:var(--card); border:2px solid #e0a458; border-radius:14px; padding:16px 18px; box-shadow:0 8px 24px rgba(0,0,0,.4); display:none; color:var(--text); }
+        /* E2 install banner */
+        .install-banner { position:fixed; bottom:15px; right:15px; z-index:1200; background:var(--card); border:2px solid #e0a458; border-radius:14px; padding:14px 18px; box-shadow:0 8px 24px rgba(0,0,0,.4); display:none; max-width:320px; color:var(--text); }
         .install-banner.show { display:block; }
+        /* E5 footer */
         .ded-footer { background:#191512; color:#cfc8bd; text-align:center; padding:35px 20px; margin-top:20px; }
         .ded-footer .ar { font-family:var(--arabic-font); font-size:20px; color:#e8e0d0; direction:rtl; }
         .ded-footer h3 { color:#fff; margin:14px 0; font-size:17px; }
@@ -135,7 +145,7 @@
                     <button class="header-btn" id="langBtn" onclick="toggleLangMenu(event)">🇹🇷</button>
                     <div class="lang-menu" id="langMenu">
                         <div class="lang-item" onclick="setLang('tr')"><span class="flag">🇹🇷</span> Türkçe</div>
-                        <div class="lang-item" onclick="setLang('en')"><span class="flag">🇬🇧</span> English</div>
+                        <div class="lang-item" onclick="setLang('en')"><span class="flag">🇬</span> English</div>
                         <div class="lang-item" onclick="setLang('de')"><span class="flag">🇩🇪</span> Deutsch</div>
                         <div class="lang-item" onclick="setLang('fr')"><span class="flag">🇫🇷</span> Français</div>
                     </div>
@@ -147,7 +157,7 @@
                 <button class="header-btn" id="bookmarkBtn" onclick="saveBookmark()">🔖</button>
                 <button class="header-btn" id="sajdahHeaderBtn" onclick="showSajdaAyat()">۩ Secde</button>
                 <button class="header-btn" id="qrBtn" onclick="toggleQR()">📱 QR</button>
-                <button class="header-btn" id="installBtn" onclick="installApp()">📲 Kur</button>
+                <button class="header-btn" id="installBtn" onclick="installApp()" style="display:none;">📲 Kur</button>
                 <button class="header-btn" id="infoBtn" onclick="toggleInfo()">ℹ️ Info</button>
                 <button class="header-btn" id="settingsHeaderBtn" onclick="toggleSettings()">⚙️ Ayarlar</button>
             </div>
@@ -160,7 +170,6 @@
                     <input id="searchInput" class="search-input" placeholder="Örn: Yasin, Mülk, 36, Cüz 5" onkeydown="if(event.key==='Enter')doSearch()">
                     <button class="nav-btn" onclick="doSearch()">🔍 Bul</button>
                 </div>
-                <div class="setting-options" id="searchSuggest" style="margin-top:12px;"></div>
             </div>
 
             <div class="list-panel" id="surahPanel" style="display:none;">
@@ -222,12 +231,11 @@
                 <div class="meal-header">
                     <div class="meal-title" id="latinTitleEl">🔤 Latince Okunuş</div>
                     <div>
-                        <button class="mini-btn active" data-group="latinmode" data-value="tr" onclick="setLatinMode('tr')">🇹🇷 Türkçe Okunuş</button>
+                        <button class="mini-btn active" data-group="latinmode" data-value="tr" onclick="setLatinMode('tr')">🇹 Türkçe Okunuş</button>
                         <button class="mini-btn" data-group="latinmode" data-value="en" onclick="setLatinMode('en')">🇬🇧 EN Transliteration</button>
                     </div>
                 </div>
                 <div class="latin-content" id="latinContent"></div>
-                <div style="margin-top:10px;font-size:11px;color:var(--muted);">Kaynak: AlQuran Cloud — en.transliteration</div>
             </div>
 
             <div class="audio-player" id="audioPlayer" style="display:none;">
@@ -316,6 +324,7 @@
             </div>
         </div>
 
+        <!-- E5: SABİT İTHAF FOOTER -->
         <footer class="ded-footer">
             <div class="ar">رَحِمَهُمُ اللَّهُ وَرَضِيَ عَنْهُمْ</div>
             <h3>Merhum Hacı Hamit Sert · Merhume Hacı Nurgüzel Sert ve ailesi</h3>
@@ -326,19 +335,15 @@
     </div>
 
     <div class="install-banner" id="installBanner">
-        📲 <b>Ersenbox Kur'an-Dinle 26</b> — <span id="installBannerText">uygulamayı cihazınıza kurmak ister misiniz?</span>
-        <div id="installHint" style="font-size:12px;color:var(--muted);margin-top:6px;"></div>
-        <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;">
-            <button class="nav-btn" onclick="installApp()">📲 Yükle</button>
-            <button class="mini-btn" onclick="hideInstallBanner()">✕ Şimdi değil</button>
-        </div>
+        📲 <b>Ersenbox</b> <span id="installBannerText">uygulamasını cihazınıza kurun</span><br>
+        <button class="nav-btn" style="margin-top:10px;" onclick="installApp()">📲 Yükle</button>
+        <button class="mini-btn" style="margin-top:10px;" onclick="hideInstallBanner()">✕</button>
     </div>
     <div class="toast" id="toast"></div>
     <audio id="audioEl"></audio>
 
     <script>
-        /* ================= SABİTLER ================= */
-        const APP_URL = 'https://kuran-dinle-26.pages.dev';   // D1: QR hedefi
+        /* ================= DEĞİŞKENLER ================= */
         let currentPage = 1; const totalPages = 604;
         let currentLang = localStorage.getItem('ersenbox_lang') || 'tr';
         let currentAyahIndex = 0, currentSurah = 1, pageAyahs = [], isPlaying = false, autoPlay = false, loadToken = 0;
@@ -361,7 +366,7 @@
             'ar.minshawi':{name:'Al-Minshawi',br:[128,64]}, 'ar.hudhaify':{name:'Al-Hudhaify',br:[128,64]},
             'ar.muhammadayyoub':{name:'Muhammad Ayyoub',br:[64,128]}, 'ar.yasserdossari':{name:'Yasser Dossari',br:[128,64]}
         };
-        const FLAG = { tr:'🇹🇷', en:'🇬🇧', de:'🇩', fr:'🇷' };
+        const FLAG = { tr:'🇹', en:'🇧', de:'🇩🇪', fr:'🇫🇷' };
         const SURAH_PAGES = [1,2,50,77,106,128,151,177,187,208,221,235,249,255,262,267,282,293,305,312,322,332,342,350,359,367,377,385,396,404,411,415,418,428,434,440,446,453,458,467,477,483,489,496,499,502,507,511,515,518,520,523,526,528,531,534,537,542,545,549,551,553,554,556,558,560,562,564,566,568,570,572,574,575,577,578,580,582,583,585,586,587,587,589,590,591,591,592,593,594,595,595,596,596,597,597,598,598,599,599,600,600,601,601,601,602,602,602,603,603,603,604,604,604];
         const SURAH_END = SURAH_PAGES.map((p,i) => i < 113 ? SURAH_PAGES[i+1] - 1 : 604);
         const JUZ_PAGES = [1,22,42,62,82,102,121,142,162,182,201,222,242,262,282,302,322,342,362,382,402,422,442,462,482,502,522,542,562,582];
@@ -370,19 +375,20 @@
         const SAJDA_JUZ = [9,13,14,15,16,17,19,21,23,24,27,30];
         const FONT_MAP = { uthmani:"'Amiri',serif", noto:"'Noto Naskh Arabic',serif", amiri:"'Amiri',serif", scheherazade:"'Scheherazade New',serif" };
 
+        /* ================= E4: INFO İÇERİK (4 dil) ================= */
         const INFO = {
-            tr:{t:'Uygulama Hakkında',c:'Yapımcı / Creator',cv:'Ersen Bakıcı — ErsenBox',d:'Niyet ve İthaf / Intention & Dedication',dt:'Merhum Hacı Hamit Sert ve merhume Hacı Nurgüzel Sert\'in ve Bakıcı Ailelerinin ruhlarına ve tüm Müslüman kardeşlerimizin ruhlarına ithaf edilmiştir. Allah onlara rahmet eylesin, kabirlerini nur ile doldursun. Bu platform onların ruhuna sadaka-i cariye olsun inşallah. 🤲',f:'🌺 Ruhlarına El-Fatiha',k:'Telif Hakkı / Copyright',kt:'Bu uygulama tamamen ücretsizdir ve hayır amaçlıdır. Reklam içermez. Telif hakkı ErsenBox\'a aittir. © 2026',s:'Kullanılan Kaynaklar / Sources Used',sl:['Kur\'an metni & meal: AlQuran Cloud API (api.alquran.cloud)','Latince okunuş (transkript): AlQuran Cloud — en.transliteration','Ses (tilavet): Islamic Network CDN (cdn.islamic.network)','Mushaf sayfa görselleri: quran.com-images (GitHub: GovarJabbar/Quran-PNG · jsDelivr) & quran.islam-db.com','Arapça yazı tipleri: Google Fonts (Amiri, Noto Naskh Arabic, Scheherazade New)','QR Kod: QR Server API (api.qrserver.com)','Barındırma / PWA: Cloudflare Pages'],l:'Dil / Language'},
-            en:{t:'About the App',c:'Creator',cv:'Ersen Bakıcı — ErsenBox',d:'Intention & Dedication',dt:'Dedicated to the souls of the late Hacı Hamit Sert and the late Hacı Nurgüzel Sert and the Bakıcı families, and to all our Muslim brothers and sisters. May Allah have mercy on them and fill their graves with light. May this platform be a continuing charity for their souls. 🤲',f:'🌺 Al-Fatiha for their souls',k:'Copyright',kt:'This app is completely free and for charity. No ads. Copyright © 2026 ErsenBox.',s:'Sources Used',sl:['Quran text & translations: AlQuran Cloud API','Latin transliteration: AlQuran Cloud — en.transliteration','Recitation audio: Islamic Network CDN','Mushaf page images: quran.com-images (GitHub/jsDelivr) & quran.islam-db.com','Arabic fonts: Google Fonts','QR code: QR Server API','Hosting / PWA: Cloudflare Pages'],l:'Language'},
-            de:{t:'Über die App',c:'Ersteller',cv:'Ersen Bakıcı — ErsenBox',d:'Absicht & Widmung',dt:'Gewidmet den Seelen der verstorbenen Hacı Hamit Sert und Hacı Nurgüzel Sert sowie den Familien Bakıcı und allen muslimischen Geschwistern. Möge Allah ihnen barmherzig sein und ihre Gräber mit Licht erfüllen. 🤲',f:'🌺 Al-Fatiha für ihre Seelen',k:'Urheberrecht',kt:'Diese App ist völlig kostenlos und gemeinnützig. Keine Werbung. Copyright © 2026 ErsenBox.',s:'Verwendete Quellen',sl:['Korantext & Übersetzungen: AlQuran Cloud API','Lateinische Umschrift: AlQuran Cloud — en.transliteration','Rezitationsaudio: Islamic Network CDN','Mushaf-Seitenbilder: quran.com-images (GitHub/jsDelivr) & quran.islam-db.com','Arabische Schriften: Google Fonts','QR-Code: QR Server API','Hosting / PWA: Cloudflare Pages'],l:'Sprache'},
-            fr:{t:'À propos de l\'application',c:'Créateur',cv:'Ersen Bakıcı — ErsenBox',d:'Intention & Dédicace',dt:'Dédié aux âmes de feu Hacı Hamit Sert et de feue Hacı Nurgüzel Sert ainsi qu\'aux familles Bakıcı et à tous nos frères et sœurs musulmans. Qu\'Allah leur accorde Sa miséricorde et remplisse leurs tombes de lumière. 🤲',f:'🌺 Al-Fatiha pour leurs âmes',k:'Droits d\'auteur',kt:'Cette application est entièrement gratuite et caritative. Sans publicité. Copyright © 2026 ErsenBox.',s:'Sources utilisées',sl:['Texte coranique & traductions : API AlQuran Cloud','Translittération latine : AlQuran Cloud — en.transliteration','Audio de récitation : CDN Islamic Network','Images du mushaf : quran.com-images (GitHub/jsDelivr) & quran.islam-db.com','Polices arabes : Google Fonts','QR code : API QR Server','Hébergement / PWA : Cloudflare Pages'],l:'Langue'}
+            tr:{t:'Uygulama Hakkında',c:'Yapımcı / Creator',cv:'Ersen Bakıcı — ErsenBox',d:'Niyet ve İthaf / Intention & Dedication',dt:'Merhum Hacı Hamit Sert ve merhume Hacı Nurgüzel Sert\'in ve Bakıcı Ailelerinin ruhlarına ve tüm Müslüman kardeşlerimizin ruhlarına ithaf edilmiştir. Allah onlara rahmet eylesin, kabirlerini nur ile doldursun. Bu platform onların ruhuna sadaka-i cariye olsun inşallah. 🤲',f:'🌺 Ruhlarına El-Fatiha',k:'Telif Hakkı / Copyright',kt:'Bu uygulama tamamen ücretsizdir ve hayır amaçlıdır. Reklam içermez. Telif hakkı ErsenBox\'a aittir. © 2026',s:'Kullanılan Kaynaklar / Sources Used',sl:['Kur\'an metni & meal: AlQuran Cloud API (api.alquran.cloud)','Ses (tilavet): Islamic Network CDN (cdn.islamic.network)','Mushaf sayfa görselleri: quran.com-images (GitHub: GovarJabbar/Quran-PNG · jsDelivr) & quran.islam-db.com','Arapça yazı tipleri: Google Fonts (Amiri, Noto Naskh Arabic, Scheherazade New)','QR Kod: QR Server API (api.qrserver.com)','Barındırma / PWA: Cloudflare Pages'],l:'Dil / Language'},
+            en:{t:'About the App',c:'Creator',cv:'Ersen Bakıcı — ErsenBox',d:'Intention & Dedication',dt:'Dedicated to the souls of the late Hacı Hamit Sert and the late Hacı Nurgüzel Sert and the Bakıcı families, and to all our Muslim brothers and sisters. May Allah have mercy on them and fill their graves with light. May this platform be a continuing charity (sadaqah jariyah) for their souls. 🤲',f:'🌺 Al-Fatiha for their souls',k:'Copyright',kt:'This app is completely free and for charity. It contains no ads. Copyright © 2026 ErsenBox.',s:'Sources Used',sl:['Quran text & translations: AlQuran Cloud API (api.alquran.cloud)','Recitation audio: Islamic Network CDN (cdn.islamic.network)','Mushaf page images: quran.com-images (GitHub: GovarJabbar/Quran-PNG · jsDelivr) & quran.islam-db.com','Arabic fonts: Google Fonts (Amiri, Noto Naskh Arabic, Scheherazade New)','QR code: QR Server API (api.qrserver.com)','Hosting / PWA: Cloudflare Pages'],l:'Language'},
+            de:{t:'Über die App',c:'Ersteller',cv:'Ersen Bakıcı — ErsenBox',d:'Absicht & Widmung',dt:'Gewidmet den Seelen der verstorbenen Hacı Hamit Sert und Hacı Nurgüzel Sert sowie den Familien Bakıcı und allen muslimischen Geschwistern. Möge Allah ihnen barmherzig sein und ihre Gräber mit Licht erfüllen. Möge diese Plattform ein fortlaufendes Almosen (Sadaka-i Dschariya) für ihre Seelen sein. 🤲',f:'🌺 Al-Fatiha für ihre Seelen',k:'Urheberrecht',kt:'Diese App ist völlig kostenlos und gemeinnützig. Keine Werbung. Copyright © 2026 ErsenBox.',s:'Verwendete Quellen',sl:['Korantext & Übersetzungen: AlQuran Cloud API','Rezitationsaudio: Islamic Network CDN','Mushaf-Seitenbilder: quran.com-images (GitHub/jsDelivr) & quran.islam-db.com','Arabische Schriften: Google Fonts','QR-Code: QR Server API','Hosting / PWA: Cloudflare Pages'],l:'Sprache'},
+            fr:{t:'À propos de l\'application',c:'Créateur',cv:'Ersen Bakıcı — ErsenBox',d:'Intention & Dédicace',dt:'Dédié aux âmes de feu Hacı Hamit Sert et de feue Hacı Nurgüzel Sert ainsi qu\'aux familles Bakıcı et à tous nos frères et sœurs musulmans. Qu\'Allah leur accorde Sa miséricorde et remplisse leurs tombes de lumière. Que cette plateforme soit une aumône continue (sadaqa-i jariya) pour leurs âmes. 🤲',f:'🌺 Al-Fatiha pour leurs âmes',k:'Droits d\'auteur',kt:'Cette application est entièrement gratuite et caritative. Sans publicité. Copyright © 2026 ErsenBox.',s:'Sources utilisées',sl:['Texte coranique & traductions : API AlQuran Cloud','Audio de récitation : CDN Islamic Network','Images des pages du mushaf : quran.com-images (GitHub/jsDelivr) & quran.islam-db.com','Polices arabes : Google Fonts','QR code : API QR Server','Hébergement / PWA : Cloudflare Pages'],l:'Langue'}
         };
         let infoLang = currentLang;
 
         const I18N = {
-            tr:{prev:'◀ Önceki',next:'Sonraki ▶',meal:'📖 Meal',listen:'▶ Dinle',latin:'🔤 Latince',sajdah:'۩ Secde',settings:'⚙️ Ayarlar',speed:'⚡ Oynatma Hızı',mealSource:'📚 Meal Kaynağı',font:'🔤 Yazı Tipi',reciter:'🎙️ Okuyucu',tajweed:'🎨 Tecvidli Metin',tajweedDesc:'Renkli tecvid gösterimi',sajdahTitle:'۩ Secde Ayetleri (Hanefi — 14 Ayet)',mealTitle:'📖 Meal',latinTitle:'🔤 Latince Okunuş',loading:'Yükleniyor...',mealError:'Meal yüklenemedi',latinError:'Transkript yüklenemedi',loadError:'❌ Sayfa yüklenemedi',loaded:'✅ Sayfa %s yüklendi',bookmarkSaved:'🔖 Sayfa %s kaydedildi',bookmarkRemoved:'🗑️ Kayıt kaldırıldı',gotoBookmark:'🔖 Kayıtlı Sayfaya Git (Sayfa %s)',noBookmark:'🔖 Kayıtlı sayfa yok',themeOn:'🌙 Gece modu',themeOff:'☀️ Gündüz modu',langChanged:'Dil: Türkçe',tajweedOn:'🎨 Tecvid AÇIK',tajweedOff:'🎨 Tecvid kapalı',speedSet:'⚡ Hız: %sx',style:'🖼️ Mushaf Stili',styleSet:'🖼️ Stil: %s',reciterSet:'🎙️ %s',fontSet:'🔤 %s',mealSet:'📚 %s',follow:'🎯 Takip',followDesc:'Okunan ayeti vurgula + takip et',followOn:'🎯 Takip AÇIK',followOff:'🎯 Takip kapalı',audioFail:'❌ Ses yok: %s',offline:'⬇️ Çevrimdışı Modu',surah:'📚 Sure',juz:'📖 Cüz',search:'🔍 Ara',searchTitle:'🔍 Sure / Cüz Ara',searchPh:'Örn: Yasin, Mulk, 36, Cüz 5',surahTitle:'📚 Sure Listesi (114)',juzTitle:'📖 Cüz Listesi (30)',listNote:'içinde secde ayeti var',notFound:'❌ Bulunamadı',surahEnd:'✅ Sure bitti',qrTitle:'📱 QR Kod ile Uygulamayı Al',qrText:'Bu QR kodu başka bir telefonla tarayın → https://kuran-dinle-26.pages.dev açılır ve kurulabilir.',installText:'uygulamayı cihazınıza kurmak ister misiniz?',suggest:'Öneriler:',installHint:''},
-            en:{prev:'◀ Previous',next:'Next ▶',meal:'📖 Translation',listen:'▶ Listen',latin:'🔤 Latin',sajdah:'۩ Sajdah',settings:'⚙️ Settings',speed:'⚡ Speed',mealSource:'📚 Source',font:'🔤 Font',reciter:'🎙️ Reciter',tajweed:'🎨 Tajweed',tajweedDesc:'Colored tajweed',sajdahTitle:'۩ Sajdah Verses (14)',mealTitle:'📖 Translation',latinTitle:'🔤 Transliteration',loading:'Loading...',mealError:'Failed',latinError:'Failed',loadError:'❌ Load failed',loaded:'✅ Page %s',bookmarkSaved:'🔖 Saved %s',bookmarkRemoved:'🗑️ Removed',gotoBookmark:'🔖 Bookmark (%s)',noBookmark:'🔖 No bookmark',themeOn:'🌙 Night',themeOff:'☀️ Day',langChanged:'Language: English',tajweedOn:'🎨 ON',tajweedOff:'🎨 Off',speedSet:'⚡ %sx',style:'🖼️ Style',styleSet:'🖼️ %s',reciterSet:'🎙️ %s',fontSet:'🔤 %s',mealSet:'📚 %s',follow:'🎯 Follow',followDesc:'Highlight playing ayah',followOn:'🎯 ON',followOff:'🎯 Off',audioFail:'❌ Audio missing: %s',offline:'⬇️ Offline',surah:'📚 Surah',juz:'📖 Juz',search:'🔍 Search',searchTitle:'🔍 Search Surah / Juz',searchPh:'e.g. Yasin, 36, Juz 5',surahTitle:'📚 Surah List (114)',juzTitle:'📖 Juz List (30)',listNote:'contains sajdah verse',notFound:'❌ Not found',surahEnd:'✅ Surah finished',qrTitle:'📱 Get the App via QR',qrText:'Scan with another phone → https://kuran-dinle-26.pages.dev opens and can be installed.',installText:'would you like to install the app?',suggest:'Suggestions:',installHint:''},
-            de:{prev:'◀ Zurück',next:'Weiter ▶',meal:'📖 Übersetzung',listen:'▶ Anhören',latin:'🔤 Latein',sajdah:'۩ Sajda',settings:'⚙️ Einstellungen',speed:'⚡ Tempo',mealSource:'📚 Quelle',font:'🔤 Schriftart',reciter:'🎙️ Rezitator',tajweed:'🎨 Tadschwid',tajweedDesc:'Farbiges Tadschwid',sajdahTitle:'۩ Sajda-Verse (14)',mealTitle:'📖 Übersetzung',latinTitle:'🔤 Umschrift',loading:'Laden...',mealError:'Fehler',latinError:'Fehler',loadError:'❌ Ladefehler',loaded:'✅ Seite %s',bookmarkSaved:'🔖 Seite %s',bookmarkRemoved:'🗑️ Entfernt',gotoBookmark:'🔖 Lesezeichen (%s)',noBookmark:'🔖 Kein Lesezeichen',themeOn:'🌙 Nacht',themeOff:'☀️ Tag',langChanged:'Sprache: Deutsch',tajweedOn:'🎨 AN',tajweedOff:'🎨 Aus',speedSet:'⚡ %sx',style:'🖼️ Stil',styleSet:'🖼️ %s',reciterSet:'🎙️ %s',fontSet:'🔤 %s',mealSet:'📚 %s',follow:'🎯 Folgen',followDesc:'Vers hervorheben',followOn:'🎯 AN',followOff:'🎯 Aus',audioFail:'❌ Audio fehlt: %s',offline:'⬇️ Offline',surah:'📚 Sure',juz:'📖 Juz',search:'🔍 Suche',searchTitle:'🔍 Sure / Juz suchen',searchPh:'z.B. Yasin, 36, Juz 5',surahTitle:'📚 Surenliste (114)',juzTitle:'📖 Juz-Liste (30)',listNote:'mit Sajda-Vers',notFound:'❌ Nicht gefunden',surahEnd:'✅ Sure beendet',qrTitle:'📱 App per QR',qrText:'Mit anderem Telefon scannen → https://kuran-dinle-26.pages.dev öffnet sich.',installText:'App installieren?',suggest:'Vorschläge:',installHint:''},
-            fr:{prev:'◀ Précédent',next:'Suivant ▶',meal:'📖 Traduction',listen:'▶ Écouter',latin:'🔤 Latin',sajdah:'۩ Sajda',settings:'⚙️ Paramètres',speed:'⚡ Vitesse',mealSource:'📚 Source',font:'🔤 Police',reciter:'🎙️ Récitateur',tajweed:'🎨 Tajwid',tajweedDesc:'Tajwid coloré',sajdahTitle:'۩ Versets de sajda (14)',mealTitle:'📖 Traduction',latinTitle:'🔤 Translittération',loading:'Chargement...',mealError:'Échec',latinError:'Échec',loadError:'❌ Échec',loaded:'✅ Page %s',bookmarkSaved:'🔖 Page %s',bookmarkRemoved:'🗑️ Retiré',gotoBookmark:'🔖 Signet (%s)',noBookmark:'🔖 Aucun signet',themeOn:'🌙 Nuit',themeOff:'☀️ Jour',langChanged:'Langue : Français',tajweedOn:'🎨 ON',tajweedOff:'🎨 Off',speedSet:'⚡ %sx',style:'🖼️ Style',styleSet:'🖼️ %s',reciterSet:'🎙️ %s',fontSet:'🔤 %s',mealSet:'📚 %s',follow:'🎯 Suivi',followDesc:'Surligner le verset',followOn:'🎯 ON',followOff:'🎯 Off',audioFail:'❌ Audio introuvable : %s',offline:'⬇️ Hors ligne',surah:'📚 Sourate',juz:'📖 Juz',search:'🔍 Rechercher',searchTitle:'🔍 Rechercher',searchPh:'ex. Yasin, 36, Juz 5',surahTitle:'📚 Sourates (114)',juzTitle:'📖 Juz (30)',listNote:'contient verset de sajda',notFound:'❌ Introuvable',surahEnd:'✅ Sourate terminée',qrTitle:'📱 App via QR',qrText:'Scannez → https://kuran-dinle-26.pages.dev s\'ouvre et peut être installée.',installText:'installer l\'application ?',suggest:'Suggestions :',installHint:''}
+            tr:{prev:'◀ Önceki',next:'Sonraki ▶',meal:'📖 Meal',listen:'▶ Dinle',latin:'🔤 Latince',sajdah:'۩ Secde',settings:'⚙️ Ayarlar',speed:'⚡ Oynatma Hızı',mealSource:'📚 Meal Kaynağı',font:'🔤 Yazı Tipi',reciter:'🎙️ Okuyucu',tajweed:'🎨 Tecvidli Metin',tajweedDesc:'Renkli tecvid gösterimi',sajdahTitle:'۩ Secde Ayetleri (Hanefi — 14 Ayet)',mealTitle:'📖 Meal',latinTitle:'🔤 Latince Okunuş',loading:'Yükleniyor...',mealError:'Meal yüklenemedi',latinError:'Transkript yüklenemedi',loadError:'❌ Sayfa yüklenemedi',loaded:'✅ Sayfa %s yüklendi',bookmarkSaved:'🔖 Sayfa %s kaydedildi',bookmarkRemoved:'🗑️ Kayıt kaldırıldı',gotoBookmark:'🔖 Kayıtlı Sayfaya Git (Sayfa %s)',noBookmark:'🔖 Kayıtlı sayfa yok',themeOn:'🌙 Gece modu',themeOff:'☀️ Gündüz modu',langChanged:'Dil: Türkçe',tajweedOn:'🎨 Tecvid AÇIK',tajweedOff:'🎨 Tecvid kapalı',speedSet:'⚡ Hız: %sx',style:'🖼️ Mushaf Stili',styleSet:'🖼️ Stil: %s',reciterSet:'🎙️ %s',fontSet:'🔤 %s',mealSet:'📚 %s',follow:'🎯 Takip',followDesc:'Okunan ayeti vurgula + takip et',followOn:'🎯 Takip AÇIK',followOff:'🎯 Takip kapalı',audioFail:'❌ Ses yok: %s',offline:'⬇️ Çevrimdışı Modu',surah:'📚 Sure',juz:'📖 Cüz',search:'🔍 Ara',searchTitle:'🔍 Sure / Cüz Ara',searchPh:'Örn: Yasin, Mülk, 36, Cüz 5',surahTitle:'📚 Sure Listesi (114)',juzTitle:'📖 Cüz Listesi (30)',listNote:'içinde secde ayeti var',notFound:'❌ Bulunamadı',surahEnd:'✅ Sure bitti',qrTitle:'📱 QR Kod ile Uygulamayı Al',qrText:'Bu QR kodu başka bir telefonla tarayın → uygulama açılır ve kurulabilir.',installText:'uygulamasını cihazınıza kurun'},
+            en:{prev:'◀ Previous',next:'Next ▶',meal:'📖 Translation',listen:'▶ Listen',latin:'🔤 Latin',sajdah:'۩ Sajdah',settings:'⚙️ Settings',speed:'⚡ Speed',mealSource:'📚 Source',font:'🔤 Font',reciter:'🎙️ Reciter',tajweed:'🎨 Tajweed',tajweedDesc:'Colored tajweed',sajdahTitle:'۩ Sajdah Verses (14)',mealTitle:'📖 Translation',latinTitle:'🔤 Transliteration',loading:'Loading...',mealError:'Failed',latinError:'Failed',loadError:'❌ Load failed',loaded:'✅ Page %s',bookmarkSaved:'🔖 Saved %s',bookmarkRemoved:'🗑️ Removed',gotoBookmark:'🔖 Bookmark (%s)',noBookmark:'🔖 No bookmark',themeOn:'🌙 Night',themeOff:'☀️ Day',langChanged:'Language: English',tajweedOn:'🎨 ON',tajweedOff:'🎨 Off',speedSet:'⚡ %sx',style:'🖼️ Style',styleSet:'🖼️ %s',reciterSet:'🎙️ %s',fontSet:'🔤 %s',mealSet:'📚 %s',follow:'🎯 Follow',followDesc:'Highlight playing ayah',followOn:'🎯 ON',followOff:'🎯 Off',audioFail:'❌ Audio missing: %s',offline:'⬇️ Offline Mode',surah:'📚 Surah',juz:'📖 Juz',search:'🔍 Search',searchTitle:'🔍 Search Surah / Juz',searchPh:'e.g. Yasin, 36, Juz 5',surahTitle:'📚 Surah List (114)',juzTitle:'📖 Juz List (30)',listNote:'contains sajdah verse',notFound:'❌ Not found',surahEnd:'✅ Surah finished',qrTitle:'📱 Get the App via QR',qrText:'Scan this QR with another phone → the app opens and can be installed.',installText:'install the app on your device'},
+            de:{prev:'◀ Zurück',next:'Weiter ▶',meal:'📖 Übersetzung',listen:'▶ Anhören',latin:'🔤 Latein',sajdah:'۩ Sajda',settings:'⚙️ Einstellungen',speed:'⚡ Tempo',mealSource:'📚 Quelle',font:'🔤 Schriftart',reciter:'🎙️ Rezitator',tajweed:'🎨 Tadschwid',tajweedDesc:'Farbiges Tadschwid',sajdahTitle:'۩ Sajda-Verse (14)',mealTitle:'📖 Übersetzung',latinTitle:'🔤 Umschrift',loading:'Laden...',mealError:'Fehler',latinError:'Fehler',loadError:'❌ Ladefehler',loaded:'✅ Seite %s',bookmarkSaved:'🔖 Seite %s',bookmarkRemoved:'🗑️ Entfernt',gotoBookmark:'🔖 Lesezeichen (%s)',noBookmark:'🔖 Kein Lesezeichen',themeOn:'🌙 Nacht',themeOff:'☀️ Tag',langChanged:'Sprache: Deutsch',tajweedOn:'🎨 AN',tajweedOff:'🎨 Aus',speedSet:'⚡ %sx',style:'🖼️ Stil',styleSet:'🖼️ %s',reciterSet:'🎙️ %s',fontSet:'🔤 %s',mealSet:'📚 %s',follow:'🎯 Folgen',followDesc:'Vers hervorheben',followOn:'🎯 AN',followOff:'🎯 Aus',audioFail:'❌ Audio fehlt: %s',offline:'⬇️ Offline',surah:'📚 Sure',juz:'📖 Juz',search:'🔍 Suche',searchTitle:'🔍 Sure / Juz suchen',searchPh:'z.B. Yasin, 36, Juz 5',surahTitle:'📚 Surenliste (114)',juzTitle:'📖 Juz-Liste (30)',listNote:'mit Sajda-Vers',notFound:'❌ Nicht gefunden',surahEnd:'✅ Sure beendet',qrTitle:'📱 App per QR holen',qrText:'QR mit anderem Telefon scannen → App öffnet sich und kann installiert werden.',installText:'App auf Ihrem Gerät installieren'},
+            fr:{prev:'◀ Précédent',next:'Suivant ▶',meal:'📖 Traduction',listen:'▶ Écouter',latin:'🔤 Latin',sajdah:'۩ Sajda',settings:'⚙️ Paramètres',speed:'⚡ Vitesse',mealSource:'📚 Source',font:'🔤 Police',reciter:'🎙️ Récitateur',tajweed:'🎨 Tajwid',tajweedDesc:'Tajwid coloré',sajdahTitle:'۩ Versets de sajda (14)',mealTitle:'📖 Traduction',latinTitle:'🔤 Translittération',loading:'Chargement...',mealError:'Échec',latinError:'Échec',loadError:'❌ Échec',loaded:'✅ Page %s',bookmarkSaved:'🔖 Page %s',bookmarkRemoved:'🗑️ Retiré',gotoBookmark:'🔖 Signet (%s)',noBookmark:'🔖 Aucun signet',themeOn:'🌙 Nuit',themeOff:'☀️ Jour',langChanged:'Langue : Français',tajweedOn:'🎨 ON',tajweedOff:'🎨 Off',speedSet:'⚡ %sx',style:'🖼️ Style',styleSet:'🖼️ %s',reciterSet:'🎙️ %s',fontSet:'🔤 %s',mealSet:'📚 %s',follow:'🎯 Suivi',followDesc:'Surligner le verset',followOn:'🎯 ON',followOff:'🎯 Off',audioFail:'❌ Audio introuvable : %s',offline:'⬇️ Hors ligne',surah:'📚 Sourate',juz:'📖 Juz',search:'🔍 Rechercher',searchTitle:'🔍 Rechercher',searchPh:'ex. Yasin, 36, Juz 5',surahTitle:'📚 Sourates (114)',juzTitle:'📖 Juz (30)',listNote:'contient verset de sajda',notFound:'❌ Introuvable',surahEnd:'✅ Sourate terminée',qrTitle:'📱 Obtenir l\'app via QR',qrText:'Scannez ce QR avec un autre téléphone → l\'app s\'ouvre et peut être installée.',installText:'installez l\'app sur votre appareil'}
         };
         const T = (key, val) => { let s = (I18N[currentLang] || I18N.tr)[key] || I18N.tr[key] || key; return val !== undefined ? s.replace('%s', val) : s; };
 
@@ -393,6 +399,8 @@
             const el = e.target.closest('button, .list-item, .sajda-item, .lang-item');
             if (el) { el.classList.remove('pressed'); void el.offsetWidth; el.classList.add('pressed'); setTimeout(() => el.classList.remove('pressed'), 450); }
         });
+
+        /* ================= D1: AÇ + OTOMATİK SKROL ================= */
         function openAndScroll(id, display) {
             const el = document.getElementById(id);
             el.style.display = display;
@@ -444,21 +452,9 @@
             showToast(T('langChanged'));
         }
 
-        /* ================= D3: AKILLI ARAMA ================= */
-        const normTR = (s) => (s || '').toLocaleLowerCase('tr')
-            .replace(/ü/g,'u').replace(/ö/g,'o').replace(/ı/g,'i').replace(/î/g,'i')
-            .replace(/ç/g,'c').replace(/ş/g,'s').replace(/ğ/g,'g').replace(/â/g,'a').replace(/û/g,'u')
-            .trim();
-        function lev(a,b) {
-            const d = [];
-            for (let i = 0; i <= a.length; i++) d[i] = [i];
-            for (let j = 0; j <= b.length; j++) d[0][j] = j;
-            for (let i = 1; i <= a.length; i++) for (let j = 1; j <= b.length; j++)
-                d[i][j] = Math.min(d[i-1][j]+1, d[i][j-1]+1, d[i-1][j-1]+(a[i-1]===b[j-1]?0:1));
-            return d[a.length][b.length];
-        }
+        /* ================= LİSTELER + ARAMA ================= */
         function closeListPanels() { ['searchPanel','surahPanel','juzPanel'].forEach(id => document.getElementById(id).style.display = 'none'); }
-        function toggleSearch() { const p = document.getElementById('searchPanel'); const show = p.style.display === 'none'; closeListPanels(); if (show) { openAndScroll('searchPanel','block'); document.getElementById('searchInput').focus(); } else p.style.display = 'none'; }
+        function toggleSearch() { const p = document.getElementById('searchPanel'); const show = p.style.display === 'none'; closeListPanels(); if (show) openAndScroll('searchPanel','block'); else p.style.display = 'none'; if (show) document.getElementById('searchInput').focus(); }
         function toggleSurahList() {
             const show = document.getElementById('surahPanel').style.display === 'none'; closeListPanels();
             if (show) {
@@ -484,22 +480,9 @@
             }
         }
         function goPage(p) { closeListPanels(); loadPage(p); window.scrollTo({ top:0, behavior:'smooth' }); }
-        function showSuggestions(qn) {
-            const box = document.getElementById('searchSuggest');
-            const sugg = [];
-            for (let i = 1; i <= 114 && sugg.length < 8; i++) {
-                const n = normTR(SURAH_TR[i]);
-                if (n.includes(qn) || qn.includes(n) || lev(n, qn) <= 3 || lev(n.slice(0, Math.max(3, qn.length)), qn) <= 2) sugg.push(i);
-            }
-            if (!sugg.length) { box.innerHTML = ''; return false; }
-            box.innerHTML = `<span style="color:var(--muted);font-size:13px;">${T('suggest')}</span> ` +
-                sugg.map(i => `<button class="mini-btn" onclick="goPage(${SURAH_PAGES[i-1]})">${SURAH_TR[i]}</button>`).join(' ');
-            return false;
-        }
         function doSearch() {
             const q = (document.getElementById('searchInput').value || '').trim().toLowerCase();
             if (!q) return;
-            document.getElementById('searchSuggest').innerHTML = '';
             const jm = q.match(/(cüz|cuz|juz|jüz)\s*(\d{1,2})/);
             if (jm) { const j = parseInt(jm[2]); if (j >= 1 && j <= 30) { goPage(JUZ_PAGES[j-1]); showToast(`📖 Cüz ${j}`); return; } }
             if (/^\d+$/.test(q)) {
@@ -507,16 +490,11 @@
                 if (n >= 1 && n <= 114) { goPage(SURAH_PAGES[n-1]); showToast(`📚 ${SURAH_TR[n]}`); return; }
                 if (n >= 1 && n <= 604) { goPage(n); return; }
             }
-            const qn = normTR(q);
-            for (let i = 1; i <= 114; i++) {
-                if (normTR(SURAH_TR[i]).includes(qn)) { goPage(SURAH_PAGES[i-1]); showToast(`📚 ${SURAH_TR[i]}`); return; }
-            }
-            // Tam eşleşme yok → öneriler
-            showSuggestions(qn);
+            for (let i = 1; i <= 114; i++) if (SURAH_TR[i].toLocaleLowerCase('tr').includes(q)) { goPage(SURAH_PAGES[i-1]); showToast(`📚 ${SURAH_TR[i]}`); return; }
             showToast(T('notFound'));
         }
 
-        /* ================= INFO + QR (D1) ================= */
+        /* ================= E4 INFO + E3 QR ================= */
         function renderInfo() {
             const d = INFO[infoLang] || INFO.tr;
             document.getElementById('infoPanel').innerHTML = `
@@ -546,35 +524,32 @@
         function toggleQR() {
             const p = document.getElementById('qrPanel');
             if (p.style.display === 'none') {
-                document.getElementById('qrImg').src = 'https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=' + encodeURIComponent(APP_URL);
+                document.getElementById('qrImg').src = 'https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=' + encodeURIComponent(location.href);
                 openAndScroll('qrPanel','block');
             } else p.style.display = 'none';
         }
 
-        /* ================= D2: HER AÇILIŞTA KURULUM ================= */
-        function hideInstallBanner() { document.getElementById('installBanner').classList.remove('show'); }
-        function showInstallBanner() {
-            const iOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
-            document.getElementById('installHint').textContent = iOS
-                ? 'iPhone/iPad: Safari → Paylaş (⎋↑) → "Ana Ekrana Ekle"'
-                : (deferredPrompt ? '🔵 Yükle butonuna bas' : 'Android/PC: Tarayıcı menüsü → "Ana ekrana ekle / Uygulamayı yükle"');
+        /* ================= E2: PWA INSTALL ================= */
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault(); deferredPrompt = e;
+            document.getElementById('installBtn').style.display = 'flex';
             document.getElementById('installBanner').classList.add('show');
-        }
-        window.addEventListener('load', () => { setTimeout(showInstallBanner, 1200); });  // her açılışta sor
+        });
+        window.addEventListener('appinstalled', () => { showToast('✅ Uygulama yüklendi'); hideInstallBanner(); });
+        function hideInstallBanner() { document.getElementById('installBanner').classList.remove('show'); }
         async function installApp() {
             if (deferredPrompt) {
                 deferredPrompt.prompt();
                 const c = await deferredPrompt.userChoice;
-                if (c.outcome === 'accepted') { showToast('✅ Yüklendi'); hideInstallBanner(); }
-                deferredPrompt = null;
+                if (c.outcome === 'accepted') showToast('✅ Yüklendi');
+                deferredPrompt = null; hideInstallBanner();
             } else {
-                showInstallBanner();
                 const iOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
-                showToast(iOS ? '📱 Safari → Paylaş → Ana Ekrana Ekle' : 'ℹ️ Menü → "Ana ekrana ekle"');
+                showToast(iOS ? '📱 Safari → Paylaş → Ana Ekrana Ekle' : 'ℹ️ Tarayıcı menüsü → "Ana ekrana ekle"');
             }
         }
 
-        /* ================= TEMA/STİL/ZOOM ================= */
+        /* ================= TEMA + STİL + ZOOM ================= */
         function applyDark() { document.body.classList.toggle('dark', darkMode); document.getElementById('themeBtn').textContent = darkMode ? '☀️' : '🌙'; applyMushafStyle(); }
         function toggleDarkMode() { darkMode = !darkMode; localStorage.setItem('ersenbox_dark', darkMode ? '1' : '0'); applyDark(); showToast(darkMode ? T('themeOn') : T('themeOff')); }
         function applyMushafStyle() {
@@ -690,64 +665,6 @@
             await fetchAndCache(`https://api.alquran.cloud/v1/page/${n}/en.transliteration`);
             for (const a of ayahs) await cacheAudioForAyah(a.number);
         }
-        
-        /* ================= MEAL OKUMA & OFFLINE CACHE ================= */
-        async function loadMeal(pageNum) {
-            const content = document.getElementById('mealContent');
-            const title = document.getElementById('mealTitleEl');
-            
-            if (!content) return;
-            content.innerHTML = `<p style="text-align:center;color:var(--muted);">${T('loading')}</p>`;
-            
-            const url = `https://api.alquran.cloud/v1/page/${pageNum}/${settings.meal}`;
-            const cacheKey = `meal_${pageNum}_${settings.meal}`;
-            
-            try {
-                // Önce network'ten dene
-                const res = await fetch(url);
-                const data = await res.json();
-                
-                if (data && data.code === 200 && data.data && data.data.ayahs) {
-                    // Başarılı - IndexedDB'ye kaydet
-                    saveToDB(cacheKey, data.data);
-                    displayMeal(data.data, pageNum);
-                    title.textContent = `📖 ${settings.meal}`;
-                } else {
-                    // API hatası - cache'den dene
-                    const cached = await loadFromDB(cacheKey);
-                    if (cached) {
-                        displayMeal(cached, pageNum);
-                        title.textContent = `📖 ${settings.meal} (📱 Offline)`;
-                    } else {
-                        content.innerHTML = `<p>${T('latinError')}</p>`;
-                    }
-                }
-            } catch(e) {
-                // Network hatası - cache'den dene
-                const cached = await loadFromDB(cacheKey);
-                if (cached) {
-                    displayMeal(cached, pageNum);
-                    title.textContent = `📖 ${settings.meal} (📱 Offline)`;
-                } else {
-                    content.innerHTML = `<p style="color:var(--muted);">Meal yüklenemedi. İnternet bağlantısını kontrol edin.</p>`;
-                }
-            }
-        }
-        
-        function displayMeal(data, pageNum) {
-            const content = document.getElementById('mealContent');
-            if (!data || !data.ayahs) { content.innerHTML = `<p>${T('latinError')}</p>`; return; }
-            
-            mealCache = data; // Global cache güncelle
-            
-            content.innerHTML = data.ayahs.map((a, i) => `
-                <div class="ayah" data-idx="${i}">
-                    <span class="ayah-number">${a.surah.number}:${a.numberInSurah}</span>
-                    <div class="ayah-arabic" onclick="playAyah(${i})">${a.text}</div>
-                    ${a.translation ? `<div class="ayah-translation">${a.translation}</div>` : ''}
-                </div>
-            `).join('');
-        }
         async function downloadPageOfflineUI() { if (!navigator.onLine) { showToast('❌'); return; } await downloadPageOffline(currentPage); showToast(`✅ Sayfa ${currentPage} offline`); updateOfflineStatus(); }
         async function downloadRangeOffline(s, e) {
             if (offlineBusy || !navigator.onLine) return;
@@ -768,70 +685,110 @@
             try { const est = await navigator.storage.estimate(); document.getElementById('offlineStatus').textContent = `💾 ${(est.usage/1048576).toFixed(1)} MB / ${(est.quota/1048576).toFixed(0)} MB`; } catch(e) {}
         }
 
-        /* ================= D5: KAYNAKLI LATİNCE ================= */
-        // Güvenilir kaynak (en.transliteration) → Türkçe okunuşa güvenli çevrim
-        function trFromEn(s) {
-            const fix = (str, re, rep) => str.replace(re, (m) => (m[0] === m[0].toUpperCase() && m[0] !== m[0].toLowerCase()) ? rep.charAt(0).toUpperCase() + rep.slice(1) : rep);
-            const map = [
-                [/sh/gi,'ş'], [/kh/gi,'h'], [/th/gi,'s'], [/dh/gi,'z'], [/gh/gi,'g'], [/ch/gi,'ç'],
-                [/aa/gi,'â'], [/ee/gi,'î'], [/oo/gi,'û'],
-                [/q/gi,'k'], [/w/gi,'v'], [/j/gi,'c']
-            ];
-            for (const [re, rep] of map) s = fix(s, re, rep);
-            return s;
+        /* ================= D4: TOKEN TABANLI TÜRKÇE OKUNUŞ ================= */
+        function trTransliterate(s) {
+            const isMark = ch => /[\u064B-\u065F\u0670\u06D6-\u06ED]/.test(ch);
+            const C = {ء:"'",أ:"'",إ:"'",ئ:"'",ؤ:"'",ب:"b",ت:"t",ث:"s",ج:"c",ح:"h",خ:"h",د:"d",ذ:"z",ر:"r",ز:"z",س:"s",ش:"ş",ص:"s",ض:"d",ط:"t",ظ:"z",ع:"'",غ:"g",ف:"f",ق:"k",ك:"k",ل:"l",م:"m",ن:"n",ه:"h",ى:"a",ة:"t",ا:"A",و:"W",ي:"Y",ٱ:"V"};
+            const toks = [];
+            for (let i = 0; i < s.length; i++) {
+                const ch = s[i];
+                if (ch === ' ') { toks.push({ sp:1 }); continue; }
+                if (ch === 'ـ') continue;
+                if (isMark(ch)) { if (toks.length && toks[toks.length-1].b) toks[toks.length-1].m += ch; continue; }
+                toks.push({ b:ch, m:'' });
+            }
+            let out = '', prevV = '';
+            for (let t = 0; t < toks.length; t++) {
+                const tk = toks[t];
+                if (tk.sp) { out += ' '; prevV = ''; continue; }
+                const base = C[tk.b];
+                if (base === undefined) continue;
+                const m = tk.m;
+                const fatha=m.includes('َ'), kasra=m.includes('ِ'), damma=m.includes('ُ'), sukun=m.includes('ْ'), shadda=m.includes('ّ'), madda=m.includes('ٰ')||m.includes('ٓ'), tF=m.includes('ً'), tK=m.includes('ٍ'), tD=m.includes('ٌ');
+                const nx = toks[t+1];
+                const nb = nx && nx.b ? nx.b : '';
+                const nm = nx && nx.m ? nx.m : '';
+                const nbSh = nm.includes('ّ');
+                let cons = base, vow = '', skip = false;
+                if (base === 'V') {                     // wasla ٱ
+                    cons = '';
+                    if (nbSh) vow = '';                 // asimilasyon
+                    else if (nb === 'ل') vow = 'e';     // artikel
+                    else if (nm.includes('ُ')) vow = 'u';
+                    else if (nm.includes('ِ')) vow = 'i';
+                    else if (nm.includes('َ')) vow = 'a';
+                    else vow = 'i';
+                }
+                else if (base === 'ل' && (sukun || (!fatha && !kasra && !damma)) && nbSh) continue; // sakin lâm gizli
+                else if (base === 'A') { cons=''; vow = (madda||fatha||prevV==='a') ? 'â' : kasra ? 'î' : damma ? 'û' : 'â'; }
+                else if (base === 'W') {
+                    if (sukun || (!fatha && !kasra && !damma && !madda)) { if (prevV === 'a') { cons='v'; vow=''; } else { cons=''; vow = prevV==='i' ? 'î' : 'û'; } }
+                    else { cons='v'; vow = fatha?'a':kasra?'i':'u'; }
+                }
+                else if (base === 'Y') {
+                    if (sukun || (!fatha && !kasra && !damma && !madda)) { if (prevV === 'a') { cons='y'; vow=''; } else { cons=''; vow='î'; } }
+                    else { cons='y'; vow = fatha?'a':kasra?'i':'u'; }
+                }
+                else {
+                    if (damma && nb === 'و' && (nm.includes('ْ') || nm === '')) { vow='û'; skip=true; }
+                    else if (kasra && nb === 'ي' && (nm.includes('ْ') || nm === '')) { vow='î'; skip=true; }
+                    else if (madda && fatha) vow='â'; else if (madda && kasra) vow='î'; else if (madda && damma) vow='û';
+                    else if (tF) vow='an'; else if (tK) vow='in'; else if (tD) vow='un';
+                    else if (fatha) vow='a'; else if (kasra) vow='i'; else if (damma) vow='u';
+                    if (shadda) cons = base + base;
+                }
+                out += cons + vow;
+                if (skip) t++;
+                prevV = /[aâ]/.test(vow) ? 'a' : /[iî]/.test(vow) ? 'i' : /[uû]/.test(vow) ? 'u' : prevV;
+            }
+            return out.replace(/\s+/g,' ').trim();
+        }
+
+        /* ================= MEAL / LATİNCE ================= */
+        let mealCache = null;
+        async function loadMeal(pageNum) {
+            const content = document.getElementById('mealContent');
+            content.innerHTML = `<p style="text-align:center;color:var(--muted);">${T('loading')}</p>`;
+            try {
+                const [ar, meal] = await Promise.all([
+                    fetch(`https://api.alquran.cloud/v1/page/${pageNum}/quran-uthmani`).then(r => r.json()),
+                    fetch(`https://api.alquran.cloud/v1/page/${pageNum}/${settings.meal}`).then(r => r.json())
+                ]);
+                if (ar.code === 200 && ar.data && ar.data.ayahs) {
+                    pageAyahs = ar.data.ayahs; currentSurah = ar.data.ayahs[0].surah.number;
+                    document.getElementById('pageTitle').textContent = (SURAH_TR[currentSurah] || ar.data.ayahs[0].surah.englishName);
+                    mealCache = { ar: ar.data.ayahs, meal: (meal.code === 200 ? meal.data.ayahs : null) };
+                    renderMealCache();
+                    if (settings.tajweed) renderTajweed();
+                    if (autoPlay && pageAyahs.length) playAyah(0);
+                } else content.innerHTML = `<p>${T('mealError')}</p>`;
+            } catch(e) { content.innerHTML = `<p>${T('mealError')}</p>`; }
+        }
+        function renderMealCache() {
+            if (!mealCache) return;
+            document.getElementById('mealContent').innerHTML = mealCache.ar.map((ayah, i) => {
+                const arabic = settings.tajweed ? colorTajweed(ayah.text) : ayah.text;
+                const trans = mealCache.meal && mealCache.meal[i] ? mealCache.meal[i].text : '';
+                return `<div class="ayah" data-idx="${i}"><span class="ayah-number">${ayah.numberInSurah}</span><div class="ayah-arabic">${arabic}</div><div class="ayah-translation">${trans}</div></div>`;
+            }).join('');
         }
         function setLatinMode(mode) { latinMode = mode; localStorage.setItem('ersenbox_latinmode', mode); updateActiveButtons('latinmode', mode); lastLatinPage = 0; loadLatin(currentPage); }
         async function loadLatin(pageNum) {
             const content = document.getElementById('latinContent');
-            const title = document.getElementById('latinTitleEl');
-            
             content.innerHTML = `<p style="text-align:center;color:var(--muted);">${T('loading')}</p>`;
-            
-            const url = `https://api.alquran.cloud/v1/page/${pageNum}/en.transliteration`;
-            const cacheKey = `latin_${pageNum}`;
-            
             try {
-                // Önce network'ten dene
-                const res = await fetch(url);
-                const data = await res.json();
-                
-                if (data && data.code === 200 && data.data && data.data.ayahs) {
-                    // Başarılı - IndexedDB'ye kaydet
-                    saveToDB(cacheKey, data.data);
-                    lastLatinPage = pageNum;
-                    content.innerHTML = data.data.ayahs.map((a,i) => {
-                        const text = latinMode === 'tr' ? trFromEn(a.text) : a.text;
-                        return `<div class="latin-item" data-idx="${i}"><b>${a.surah.number}:${a.numberInSurah}</b> ${text}</div>`;
-                    }).join('');
-                    title.textContent = '🔤 Latince Okunuş';
+                if (latinMode === 'en') {
+                    const res = await fetch(`https://api.alquran.cloud/v1/page/${pageNum}/en.transliteration`);
+                    const data = await res.json();
+                    if (data.code === 200) { lastLatinPage = pageNum; content.innerHTML = data.data.ayahs.map((a,i) => `<div class="latin-item" data-idx="${i}"><b>${a.surah.number}:${a.numberInSurah}</b>${a.text}</div>`).join(''); }
+                    else content.innerHTML = `<p>${T('latinError')}</p>`;
                 } else {
-                    // API hatası - cache'den dene
-                    const cached = await loadFromDB(cacheKey);
-                    if (cached && cached.ayahs) {
-                        lastLatinPage = pageNum;
-                        content.innerHTML = cached.ayahs.map((a,i) => {
-                            const text = latinMode === 'tr' ? trFromEn(a.text) : a.text;
-                            return `<div class="latin-item" data-idx="${i}"><b>${a.surah.number}:${a.numberInSurah}</b> ${text}</div>`;
-                        }).join('');
-                        title.textContent = '🔤 Latince Okunuş (📱 Offline)';
-                    } else {
-                        content.innerHTML = `<p>${T('latinError')}</p>`;
-                    }
+                    let ayahs = (mealCache && mealCache.ar) ? mealCache.ar : null;
+                    if (!ayahs) { const res = await fetch(`https://api.alquran.cloud/v1/page/${pageNum}/quran-uthmani`); const data = await res.json(); if (data.code === 200) ayahs = data.data.ayahs; }
+                    if (ayahs) { lastLatinPage = pageNum; content.innerHTML = ayahs.map((a,i) => `<div class="latin-item" data-idx="${i}"><b>${a.surah.number}:${a.numberInSurah}</b>${trTransliterate(a.text)}</div>`).join(''); }
+                    else content.innerHTML = `<p>${T('latinError')}</p>`;
                 }
-            } catch(e) {
-                // Network hatası - cache'den dene
-                const cached = await loadFromDB(cacheKey);
-                if (cached && cached.ayahs) {
-                    lastLatinPage = pageNum;
-                    content.innerHTML = cached.ayahs.map((a,i) => {
-                        const text = latinMode === 'tr' ? trFromEn(a.text) : a.text;
-                        return `<div class="latin-item" data-idx="${i}"><b>${a.surah.number}:${a.numberInSurah}</b> ${text}</div>`;
-                    }).join('');
-                    title.textContent = '🔤 Latince Okunuş (📱 Offline)';
-                } else {
-                    content.innerHTML = `<p style="color:var(--muted);">Latince yüklenemedi. İnternet bağlantısını kontrol edin.</p>`;
-                }
-            }
+            } catch(e) { content.innerHTML = `<p>${T('latinError')}</p>`; }
         }
         function toggleLatin() {
             latinVisible = !latinVisible;
@@ -947,109 +904,10 @@
             const a = pageAyahs[currentAyahIndex];
             document.getElementById('audioInfo').textContent = `${RECITERS[settings.reciter] ? RECITERS[settings.reciter].name : ''}${a ? ` ${a.surah.number}:${a.numberInSurah}` : ''} - ${f(t.currentTime)} / ${f(d)}`;
         });
-        /* ================= PWA & OFFLINE CACHE ================= */
-        
-        // IndexedDB - Kuran verisi offline cache
-        const DB_NAME = 'ErsenboxQuran';
-        const DB_VERSION = 1;
-        let db = null;
-        
-        function initDB() {
-          return new Promise((resolve) => {
-            const req = indexedDB.open(DB_NAME, DB_VERSION);
-            req.onerror = () => { console.log('[DB] Init failed'); resolve(null); };
-            req.onsuccess = () => { db = req.result; resolve(db); };
-            req.onupgradeneeded = (e) => {
-              const d = e.target.result;
-              if (!d.objectStoreNames.contains('quran')) d.createObjectStore('quran', { keyPath: 'id' });
-              if (!d.objectStoreNames.contains('metadata')) d.createObjectStore('metadata', { keyPath: 'key' });
-            };
-          });
-        }
-        
-        function saveToDB(key, value) {
-          if (!db) return;
-          try {
-            const tx = db.transaction([key.includes('quran') ? 'quran' : 'metadata'], 'readwrite');
-            const store = tx.objectStore(key.includes('quran') ? 'quran' : 'metadata');
-            store.put({ id: key, data: value, timestamp: Date.now() });
-          } catch (e) { console.log('[DB Save]', e); }
-        }
-        
-        function loadFromDB(key) {
-          return new Promise((resolve) => {
-            if (!db) { resolve(null); return; }
-            try {
-              const tx = db.transaction([key.includes('quran') ? 'quran' : 'metadata'], 'readonly');
-              const store = tx.objectStore(key.includes('quran') ? 'quran' : 'metadata');
-              const req = store.get(key);
-              req.onsuccess = () => resolve(req.result ? req.result.data : null);
-              req.onerror = () => resolve(null);
-            } catch (e) { resolve(null); }
-          });
-        }
-        
-        // PWA Install Prompt Handler
-        let deferredPrompt = null;
-        window.addEventListener('beforeinstallprompt', (e) => {
-          e.preventDefault();
-          deferredPrompt = e;
-          console.log('[PWA] Install prompt ready');
-          // Install button show logic - if you add one
-        });
-        
-        function triggerInstall() {
-          if (deferredPrompt) {
-            deferredPrompt.prompt();
-            deferredPrompt.userChoice.then((result) => {
-              if (result.outcome === 'accepted') showToast('✅ App kuruldu!');
-              deferredPrompt = null;
-            });
-          }
-        }
-        
-        // PWA Installed detection
-        window.addEventListener('appinstalled', () => {
-          console.log('[PWA] App installed');
-          showToast('📱 App başarıyla kuruldu!');
-        });
-        
-        // Service Worker Registration
-        if ('serviceWorker' in navigator) {
-          navigator.serviceWorker.register('./sw.js')
-            .then(reg => {
-              console.log('[SW] Registered', reg.scope);
-              // Periodic update check (every 6 hours)
-              setInterval(() => reg.update().catch(() => {}), 6 * 60 * 60 * 1000);
-            })
-            .catch(err => console.error('[SW] Registration failed:', err));
-        }
-        
-        // Storage persistence request
-        if (navigator.storage && navigator.storage.persist) {
-          navigator.storage.persist().then(persistent => {
-            console.log('[Storage] Persistent:', persistent);
-          });
-        }
-        
-        // Online/Offline events
-        window.addEventListener('online', () => {
-          showToast('🟢 Online');
-          console.log('[Network] Online');
-        });
-        window.addEventListener('offline', () => {
-          showToast('🔴 Offline mod - Cached veri gösterilecek');
-          console.log('[Network] Offline');
-        });
-        
-        // Initial DB init ve cached data loading
-        initDB().then(() => {
-          console.log('[DB] Initialized');
-          // Surah verisi varsa yükle (offline fallback)
-          loadFromDB('surahList').then(data => {
-            if (data) console.log('[Offline] Cached Surah list available:', data.length + ' surahs');
-          });
-        });
+        if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').catch(err => console.error('[SW]', err));
+        if (navigator.storage && navigator.storage.persist) navigator.storage.persist();
+        window.addEventListener('online', () => showToast('🟢 Online'));
+        window.addEventListener('offline', () => showToast('🔴 Offline mod'));
 
         applyDark();
         document.getElementById('langBtn').textContent = FLAG[currentLang];

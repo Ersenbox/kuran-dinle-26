@@ -1,97 +1,18 @@
 {
-  "name": "Ersenbox Kur'an-Dinle 26",
-  "short_name": "Ersenbox Qur'an",
-  "id": "./",
-  "scope": "./",
-  "description": "Kuran-ı Kerim Okuma & Dinleme Uygulaması - Online ve Offline Çalışır",
-  "start_url": "./index.html?utm_source=pwa",
-  "display": "standalone",
-  "orientation": "portrait-primary",
-  "background_color": "#f5f0e8",
-  "theme_color": "#1a5c4e",
-  "lang": "tr",
-  "dir": "ltr",
-  "categories": ["books", "education", "lifestyle", "productivity"],
-  "screenshots": [
-    {
-      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 540 720'%3E%3Crect fill='%231a5c4e' width='540' height='720'/%3E%3Ctext x='50%25' y='50%25' font-size='180' text-anchor='middle' dominant-baseline='middle' fill='%23fff'%3E📖%3C/text%3E%3C/svg%3E",
-      "sizes": "540x720",
-      "type": "image/svg+xml",
-      "purpose": "any"
-    },
-    {
-      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1024 1024'%3E%3Crect fill='%231a5c4e' width='1024' height='1024'/%3E%3Ctext x='50%25' y='50%25' font-size='400' text-anchor='middle' dominant-baseline='middle' fill='%23fff'%3E📖%3C/text%3E%3C/svg%3E",
-      "sizes": "1024x1024",
-      "type": "image/svg+xml",
-      "purpose": "any"
-    }
-  ],
-  "icons": [
-    {
-      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect fill='%231a5c4e' width='192' height='192' rx='40'/%3E%3Ctext x='50%25' y='55%25' font-size='110' text-anchor='middle' dominant-baseline='middle'%3E📖%3C/text%3E%3C/svg%3E",
-      "sizes": "192x192",
-      "type": "image/svg+xml",
-      "purpose": "any"
-    },
-    {
-      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect fill='%231a5c4e' width='512' height='512' rx='80'/%3E%3Ctext x='50%25' y='55%25' font-size='280' text-anchor='middle' dominant-baseline='middle'%3E📖%3C/text%3E%3C/svg%3E",
-      "sizes": "512x512",
-      "type": "image/svg+xml",
-      "purpose": "any"
-    },
-    {
-      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect fill='%231a5c4e' width='512' height='512' rx='80'/%3E%3Ctext x='50%25' y='55%25' font-size='280' text-anchor='middle' dominant-baseline='middle'%3E📖%3C/text%3E%3C/svg%3E",
-      "sizes": "512x512",
-      "type": "image/svg+xml",
-      "purpose": "any maskable"
-    }
-  ],
-  "shortcuts": [
-    {
-      "name": "Kuran Oku",
-      "short_name": "Oku",
-      "description": "Kuran-ı Kerim'i oku",
-      "url": "./index.html?view=surah&surah=1",
-      "icons": [
-        {
-          "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 96'%3E%3Crect fill='%231a5c4e' width='96' height='96' rx='20'/%3E%3Ctext x='50%25' y='50%25' font-size='50' text-anchor='middle' dominant-baseline='middle'%3E📖%3C/text%3E%3C/svg%3E",
-          "sizes": "96x96",
-          "type": "image/svg+xml"
-        }
-      ]
-    },
-    {
-      "name": "Kuran Dinle",
-      "short_name": "Dinle",
-      "description": "Kuran-ı Kerim'i dinle",
-      "url": "./index.html?view=audio",
-      "icons": [
-        {
-          "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 96'%3E%3Crect fill='%231a5c4e' width='96' height='96' rx='20'/%3E%3Ctext x='50%25' y='50%25' font-size='50' text-anchor='middle' dominant-baseline='middle'%3E🔊%3C/text%3E%3C/svg%3E",
-          "sizes": "96x96",
-          "type": "image/svg+xml"
-        }
-      ]
-    }
-  ],
-  "share_target": {
-    "action": "./index.html",
-    "method": "POST",
-    "enctype": "multipart/form-data",
-    "params": {
-      "title": "title",
-      "text": "text",
-      "url": "url"
-    }
-  },
-  "prefer_related_applications": false,
-  "related_applications": [],
-  "scope_extensions": [
-    {
-      "origin": "https://cdn.islamic.network"
-    },
-    {
-      "origin": "https://api.alquran.cloud"
-    }
-  ]
+    "name": "Ersenbox Kur'an-Dinle 26",
+    "short_name": "Ersenbox",
+    "id": "./",
+    "scope": "./",
+    "description": "Kuran-ı Kerim Okuma & Dinleme Uygulaması",
+    "start_url": "./index.html",
+    "display": "standalone",
+    "background_color": "#f5f0e8",
+    "theme_color": "#1a5c4e",
+    "orientation": "any",
+    "lang": "tr",
+    "categories": ["books", "education", "lifestyle"],
+    "icons": [
+        { "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect fill='%231a5c4e' width='512' height='512' rx='80'/%3E%3Ctext x='50%25' y='55%25' font-size='280' text-anchor='middle' dominant-baseline='middle'%3E📖%3C/text%3E%3C/svg%3E", "sizes": "192x192", "type": "image/svg+xml", "purpose": "any" },
+        { "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect fill='%231a5c4e' width='512' height='512' rx='80'/%3E%3Ctext x='50%25' y='55%25' font-size='280' text-anchor='middle' dominant-baseline='middle'%3E📖%3C/text%3E%3C/svg%3E", "sizes": "512x512", "type": "image/svg+xml", "purpose": "any maskable" }
+    ]
 }
