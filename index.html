@@ -552,14 +552,12 @@
         }
 
         /* ================= D2: HER AÇILIŞTA KURULUM ================= */
-        window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; });
-        window.addEventListener('appinstalled', () => { showToast('✅ Uygulama yüklendi'); hideInstallBanner(); });
         function hideInstallBanner() { document.getElementById('installBanner').classList.remove('show'); }
         function showInstallBanner() {
             const iOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
             document.getElementById('installHint').textContent = iOS
                 ? 'iPhone/iPad: Safari → Paylaş (⎋↑) → "Ana Ekrana Ekle"'
-                : (deferredPrompt ? '' : 'Android/PC: Tarayıcı menüsü → "Ana ekrana ekle / Uygulamayı yükle"');
+                : (deferredPrompt ? '🔵 Yükle butonuna bas' : 'Android/PC: Tarayıcı menüsü → "Ana ekrana ekle / Uygulamayı yükle"');
             document.getElementById('installBanner').classList.add('show');
         }
         window.addEventListener('load', () => { setTimeout(showInstallBanner, 1200); });  // her açılışta sor
@@ -692,6 +690,64 @@
             await fetchAndCache(`https://api.alquran.cloud/v1/page/${n}/en.transliteration`);
             for (const a of ayahs) await cacheAudioForAyah(a.number);
         }
+        
+        /* ================= MEAL OKUMA & OFFLINE CACHE ================= */
+        async function loadMeal(pageNum) {
+            const content = document.getElementById('mealContent');
+            const title = document.getElementById('mealTitleEl');
+            
+            if (!content) return;
+            content.innerHTML = `<p style="text-align:center;color:var(--muted);">${T('loading')}</p>`;
+            
+            const url = `https://api.alquran.cloud/v1/page/${pageNum}/${settings.meal}`;
+            const cacheKey = `meal_${pageNum}_${settings.meal}`;
+            
+            try {
+                // Önce network'ten dene
+                const res = await fetch(url);
+                const data = await res.json();
+                
+                if (data && data.code === 200 && data.data && data.data.ayahs) {
+                    // Başarılı - IndexedDB'ye kaydet
+                    saveToDB(cacheKey, data.data);
+                    displayMeal(data.data, pageNum);
+                    title.textContent = `📖 ${settings.meal}`;
+                } else {
+                    // API hatası - cache'den dene
+                    const cached = await loadFromDB(cacheKey);
+                    if (cached) {
+                        displayMeal(cached, pageNum);
+                        title.textContent = `📖 ${settings.meal} (📱 Offline)`;
+                    } else {
+                        content.innerHTML = `<p>${T('latinError')}</p>`;
+                    }
+                }
+            } catch(e) {
+                // Network hatası - cache'den dene
+                const cached = await loadFromDB(cacheKey);
+                if (cached) {
+                    displayMeal(cached, pageNum);
+                    title.textContent = `📖 ${settings.meal} (📱 Offline)`;
+                } else {
+                    content.innerHTML = `<p style="color:var(--muted);">Meal yüklenemedi. İnternet bağlantısını kontrol edin.</p>`;
+                }
+            }
+        }
+        
+        function displayMeal(data, pageNum) {
+            const content = document.getElementById('mealContent');
+            if (!data || !data.ayahs) { content.innerHTML = `<p>${T('latinError')}</p>`; return; }
+            
+            mealCache = data; // Global cache güncelle
+            
+            content.innerHTML = data.ayahs.map((a, i) => `
+                <div class="ayah" data-idx="${i}">
+                    <span class="ayah-number">${a.surah.number}:${a.numberInSurah}</span>
+                    <div class="ayah-arabic" onclick="playAyah(${i})">${a.text}</div>
+                    ${a.translation ? `<div class="ayah-translation">${a.translation}</div>` : ''}
+                </div>
+            `).join('');
+        }
         async function downloadPageOfflineUI() { if (!navigator.onLine) { showToast('❌'); return; } await downloadPageOffline(currentPage); showToast(`✅ Sayfa ${currentPage} offline`); updateOfflineStatus(); }
         async function downloadRangeOffline(s, e) {
             if (offlineBusy || !navigator.onLine) return;
@@ -727,18 +783,55 @@
         function setLatinMode(mode) { latinMode = mode; localStorage.setItem('ersenbox_latinmode', mode); updateActiveButtons('latinmode', mode); lastLatinPage = 0; loadLatin(currentPage); }
         async function loadLatin(pageNum) {
             const content = document.getElementById('latinContent');
+            const title = document.getElementById('latinTitleEl');
+            
             content.innerHTML = `<p style="text-align:center;color:var(--muted);">${T('loading')}</p>`;
+            
+            const url = `https://api.alquran.cloud/v1/page/${pageNum}/en.transliteration`;
+            const cacheKey = `latin_${pageNum}`;
+            
             try {
-                const res = await fetch(`https://api.alquran.cloud/v1/page/${pageNum}/en.transliteration`);
+                // Önce network'ten dene
+                const res = await fetch(url);
                 const data = await res.json();
-                if (data.code === 200 && data.data && data.data.ayahs) {
+                
+                if (data && data.code === 200 && data.data && data.data.ayahs) {
+                    // Başarılı - IndexedDB'ye kaydet
+                    saveToDB(cacheKey, data.data);
                     lastLatinPage = pageNum;
                     content.innerHTML = data.data.ayahs.map((a,i) => {
                         const text = latinMode === 'tr' ? trFromEn(a.text) : a.text;
-                        return `<div class="latin-item" data-idx="${i}"><b>${a.surah.number}:${a.numberInSurah}</b>${text}</div>`;
+                        return `<div class="latin-item" data-idx="${i}"><b>${a.surah.number}:${a.numberInSurah}</b> ${text}</div>`;
                     }).join('');
-                } else content.innerHTML = `<p>${T('latinError')}</p>`;
-            } catch(e) { content.innerHTML = `<p>${T('latinError')}</p>`; }
+                    title.textContent = '🔤 Latince Okunuş';
+                } else {
+                    // API hatası - cache'den dene
+                    const cached = await loadFromDB(cacheKey);
+                    if (cached && cached.ayahs) {
+                        lastLatinPage = pageNum;
+                        content.innerHTML = cached.ayahs.map((a,i) => {
+                            const text = latinMode === 'tr' ? trFromEn(a.text) : a.text;
+                            return `<div class="latin-item" data-idx="${i}"><b>${a.surah.number}:${a.numberInSurah}</b> ${text}</div>`;
+                        }).join('');
+                        title.textContent = '🔤 Latince Okunuş (📱 Offline)';
+                    } else {
+                        content.innerHTML = `<p>${T('latinError')}</p>`;
+                    }
+                }
+            } catch(e) {
+                // Network hatası - cache'den dene
+                const cached = await loadFromDB(cacheKey);
+                if (cached && cached.ayahs) {
+                    lastLatinPage = pageNum;
+                    content.innerHTML = cached.ayahs.map((a,i) => {
+                        const text = latinMode === 'tr' ? trFromEn(a.text) : a.text;
+                        return `<div class="latin-item" data-idx="${i}"><b>${a.surah.number}:${a.numberInSurah}</b> ${text}</div>`;
+                    }).join('');
+                    title.textContent = '🔤 Latince Okunuş (📱 Offline)';
+                } else {
+                    content.innerHTML = `<p style="color:var(--muted);">Latince yüklenemedi. İnternet bağlantısını kontrol edin.</p>`;
+                }
+            }
         }
         function toggleLatin() {
             latinVisible = !latinVisible;
@@ -854,10 +947,109 @@
             const a = pageAyahs[currentAyahIndex];
             document.getElementById('audioInfo').textContent = `${RECITERS[settings.reciter] ? RECITERS[settings.reciter].name : ''}${a ? ` ${a.surah.number}:${a.numberInSurah}` : ''} - ${f(t.currentTime)} / ${f(d)}`;
         });
-        if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').catch(err => console.error('[SW]', err));
-        if (navigator.storage && navigator.storage.persist) navigator.storage.persist();
-        window.addEventListener('online', () => showToast('🟢 Online'));
-        window.addEventListener('offline', () => showToast('🔴 Offline mod'));
+        /* ================= PWA & OFFLINE CACHE ================= */
+        
+        // IndexedDB - Kuran verisi offline cache
+        const DB_NAME = 'ErsenboxQuran';
+        const DB_VERSION = 1;
+        let db = null;
+        
+        function initDB() {
+          return new Promise((resolve) => {
+            const req = indexedDB.open(DB_NAME, DB_VERSION);
+            req.onerror = () => { console.log('[DB] Init failed'); resolve(null); };
+            req.onsuccess = () => { db = req.result; resolve(db); };
+            req.onupgradeneeded = (e) => {
+              const d = e.target.result;
+              if (!d.objectStoreNames.contains('quran')) d.createObjectStore('quran', { keyPath: 'id' });
+              if (!d.objectStoreNames.contains('metadata')) d.createObjectStore('metadata', { keyPath: 'key' });
+            };
+          });
+        }
+        
+        function saveToDB(key, value) {
+          if (!db) return;
+          try {
+            const tx = db.transaction([key.includes('quran') ? 'quran' : 'metadata'], 'readwrite');
+            const store = tx.objectStore(key.includes('quran') ? 'quran' : 'metadata');
+            store.put({ id: key, data: value, timestamp: Date.now() });
+          } catch (e) { console.log('[DB Save]', e); }
+        }
+        
+        function loadFromDB(key) {
+          return new Promise((resolve) => {
+            if (!db) { resolve(null); return; }
+            try {
+              const tx = db.transaction([key.includes('quran') ? 'quran' : 'metadata'], 'readonly');
+              const store = tx.objectStore(key.includes('quran') ? 'quran' : 'metadata');
+              const req = store.get(key);
+              req.onsuccess = () => resolve(req.result ? req.result.data : null);
+              req.onerror = () => resolve(null);
+            } catch (e) { resolve(null); }
+          });
+        }
+        
+        // PWA Install Prompt Handler
+        let deferredPrompt = null;
+        window.addEventListener('beforeinstallprompt', (e) => {
+          e.preventDefault();
+          deferredPrompt = e;
+          console.log('[PWA] Install prompt ready');
+          // Install button show logic - if you add one
+        });
+        
+        function triggerInstall() {
+          if (deferredPrompt) {
+            deferredPrompt.prompt();
+            deferredPrompt.userChoice.then((result) => {
+              if (result.outcome === 'accepted') showToast('✅ App kuruldu!');
+              deferredPrompt = null;
+            });
+          }
+        }
+        
+        // PWA Installed detection
+        window.addEventListener('appinstalled', () => {
+          console.log('[PWA] App installed');
+          showToast('📱 App başarıyla kuruldu!');
+        });
+        
+        // Service Worker Registration
+        if ('serviceWorker' in navigator) {
+          navigator.serviceWorker.register('./sw.js')
+            .then(reg => {
+              console.log('[SW] Registered', reg.scope);
+              // Periodic update check (every 6 hours)
+              setInterval(() => reg.update().catch(() => {}), 6 * 60 * 60 * 1000);
+            })
+            .catch(err => console.error('[SW] Registration failed:', err));
+        }
+        
+        // Storage persistence request
+        if (navigator.storage && navigator.storage.persist) {
+          navigator.storage.persist().then(persistent => {
+            console.log('[Storage] Persistent:', persistent);
+          });
+        }
+        
+        // Online/Offline events
+        window.addEventListener('online', () => {
+          showToast('🟢 Online');
+          console.log('[Network] Online');
+        });
+        window.addEventListener('offline', () => {
+          showToast('🔴 Offline mod - Cached veri gösterilecek');
+          console.log('[Network] Offline');
+        });
+        
+        // Initial DB init ve cached data loading
+        initDB().then(() => {
+          console.log('[DB] Initialized');
+          // Surah verisi varsa yükle (offline fallback)
+          loadFromDB('surahList').then(data => {
+            if (data) console.log('[Offline] Cached Surah list available:', data.length + ' surahs');
+          });
+        });
 
         applyDark();
         document.getElementById('langBtn').textContent = FLAG[currentLang];
