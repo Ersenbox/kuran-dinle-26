@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#1a5c4e">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Ersenbox">
+    <title>Ersenbox Kur'an-Dinle 26</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect fill='%231a5c4e' width='512' height='512' rx='80'/><text x='50%' y='55%' font-size='280' text-anchor='middle' dominant-baseline='middle'>📖</text></svg>">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect fill='%231a5c4e' width='512' height='512' rx='80'/><text x='50%' y='55%' font-size='280' text-anchor='middle' dominant-baseline='middle'>📖</text></svg>">
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="preconnect" href="https://quran.islam-db.com" crossorigin>
+    <link rel="preconnect" href="https://api.alquran.cloud" crossorigin>
+    <link rel="preconnect" href="https://cdn.islamic.network" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Naskh+Arabic:wght@400;700&family=Scheherazade+New:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --card:#fff; --panel:#f5f0e8; --panel2:#e3efe9; --text:#333; --muted:#666; --accent:#1a5c4e; --accent2:#2d7a6b; --arabic-font:'Amiri',serif; --zoom:1; --gold:#d4af37; --goldglow:rgba(224,164,88,.75); --surah-bg:#fdf3d7; --surah-item:#fffbe8; --juz-bg:#e3ecf7; --juz-item:#f2f7ff; }
+        body.dark { --card:#1b2422; --panel:#16201d; --panel2:#12241e; --text:#e6e6e6; --muted:#9fb3ad; --accent:#2d7a6b; --accent2:#3a917f; --surah-bg:#2a2410; --surah-item:#332c12; --juz-bg:#10202f; --juz-item:#16283a; }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Cg fill='none' stroke='%23ffffff' stroke-opacity='0.14'%3E%3Cpath d='M40 0L80 40L40 80L0 40Z'/%3E%3Ccircle cx='40' cy='40' r='14'/%3E%3C/g%3E%3C/svg%3E") repeat, linear-gradient(180deg,#072b23 0%,#1a5c4e 35%,#cbbfa8 100%); background-attachment:fixed; min-height:100vh; overflow-x:hidden; }
+        body.dark { background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Cg fill='none' stroke='%23ffffff' stroke-opacity='0.07'%3E%3Cpath d='M40 0L80 40L40 80L0 40Z'/%3E%3Ccircle cx='40' cy='40' r='14'/%3E%3C/g%3E%3C/svg%3E") repeat, linear-gradient(180deg,#020403 0%,#0b352c 40%,#101413 100%); background-attachment:fixed; }
+        .container { max-width:1200px; margin:0 auto; background:var(--card); min-height:100vh; box-shadow:0 0 30px rgba(0,0,0,.35); display:flex; flex-direction:column; }
+        .main-content { padding:20px; flex:1; }
+        header { background:linear-gradient(135deg,var(--accent) 0%,var(--accent2) 100%); color:#fff; padding:20px; text-align:center; position:sticky; top:0; z-index:100; }
+        header h1 { font-size:24px; margin-bottom:10px; }
+        .header-buttons { display:flex; gap:8px; justify-content:center; flex-wrap:wrap; margin-top:15px; }
+        .header-btn { background:rgba(255,255,255,.2); border:2px solid #fff; color:#fff; padding:8px 14px; border-radius:20px; cursor:pointer; font-size:14px; display:flex; align-items:center; gap:5px; }
+        .lang-wrap { position:relative; display:inline-block; }
+        .lang-menu { display:none; position:absolute; top:115%; left:50%; transform:translateX(-50%); background:var(--card); border:2px solid var(--accent); border-radius:12px; z-index:300; min-width:170px; overflow:hidden; }
+        .lang-menu.open { display:block; }
+        .lang-item { display:flex; align-items:center; gap:10px; padding:12px 16px; cursor:pointer; color:var(--text); font-size:14px; }
+        .lang-item .flag { font-size:20px; }
+        #settingsPanel,#mealContainer,#latinContainer,#audioPlayer,#sajdaList,#searchPanel,#surahPanel,#juzPanel,#infoPanel,#qrPanel { scroll-margin-top:100px; }
+        .page-nav { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; padding:15px; background:var(--panel); border-radius:12px; }
+        .nav-btn { background:var(--accent); color:#fff; border:none; padding:12px 24px; border-radius:8px; cursor:pointer; font-size:16px; }
+        .nav-btn:disabled { background:#ccc; cursor:not-allowed; }
+        .page-info { text-align:center; flex:1; }
+        .page-display { font-size:18px; font-weight:bold; color:var(--accent); margin-bottom:5px; }
+        .page-title { font-size:14px; color:var(--muted); }
+        .zoom-bar { display:flex; justify-content:center; align-items:center; gap:12px; margin-bottom:12px; }
+        .zoom-btn { background:var(--accent); color:#fff; border:none; width:44px; height:44px; border-radius:50%; font-size:16px; font-weight:bold; cursor:pointer; }
+        .zoom-label { font-weight:bold; color:var(--accent); min-width:56px; text-align:center; }
+        .mushaf-container { background:var(--card); border:3px solid var(--accent); border-radius:12px; padding:20px; margin-bottom:20px; position:relative; min-height:400px; display:flex; align-items:center; justify-content:center; overflow:auto; }
+        #mushafImage { max-width:none; border-radius:8px; display:none; }
+        #mushafImage.loaded { display:block; }
+        .loader { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); display:none; }
+        .spinner { width:50px; height:50px; border:4px solid rgba(128,128,128,.2); border-top:4px solid var(--accent); border-radius:50%; animation:spin 1s linear infinite; }
+        @keyframes spin { to{transform:rotate(360deg)} }
+        .tajweed-container { display:none; background:var(--card); border:3px solid var(--accent); border-radius:12px; padding:25px; margin-bottom:20px; }
+        .tajweed-ayah { font-family:var(--arabic-font); font-size:calc(30px * var(--zoom)); line-height:2.3; direction:rtl; text-align:right; color:var(--text); margin-bottom:18px; padding:6px 10px; }
+        .tajweed-num { display:inline-block; background:var(--accent); color:#fff; font-size:14px; font-family:sans-serif; border-radius:50%; padding:4px 9px; margin-left:8px; }
+        .tw-ghunnah { color:#0a8f3c; } .tw-madd { color:#d23b3b; } .tw-qalqalah { color:#1867c0; } .tw-ikhfa { color:#8a3bd0; }
+        body.dark .tw-ghunnah { color:#4ade80; } body.dark .tw-madd { color:#f87171; } body.dark .tw-qalqalah { color:#60a5fa; } body.dark .tw-ikhfa { color:#c084fc; }
+        .playing { outline:3px solid #d23b3b; background:rgba(210,59,59,.10); }
+        .playing .ayah-number,.playing .tajweed-num { background:#d23b3b; }
+        .playing::after { content:' 🔊'; }
+        .action-buttons { display:flex; gap:10px; justify-content:center; margin-bottom:20px; flex-wrap:wrap; }
+        .action-btn { background:linear-gradient(135deg,var(--accent) 0%,var(--accent2) 100%); color:#fff; border:none; padding:15px 30px; border-radius:12px; cursor:pointer; font-size:16px; font-weight:bold; display:flex; align-items:center; gap:8px; }
+        .action-btn.on { outline:3px solid #e0a458; box-shadow:0 0 14px var(--goldglow); }
+        .meal-container,.latin-container { background:var(--panel); border-radius:12px; padding:20px; margin-bottom:20px; }
+        .list-panel { border-radius:12px; padding:20px; margin-bottom:20px; border:2px solid var(--accent); }
+        #searchPanel { background:var(--panel2); }
+        #surahPanel { background:var(--surah-bg); border-color:#c9a227; }
+        #surahPanel .list-item { background:var(--surah-item); border-left-color:#c9a227; }
+        #juzPanel { background:var(--juz-bg); border-color:#4a7fb5; }
+        #juzPanel .list-item { background:var(--juz-item); border-left-color:#4a7fb5; }
+        .meal-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; padding-bottom:15px; border-bottom:2px solid var(--accent); flex-wrap:wrap; gap:10px; }
+        .meal-title { font-size:20px; font-weight:bold; color:var(--accent); }
+        .mini-btn { background:var(--card); border:2px solid var(--accent); color:var(--text); padding:6px 14px; border-radius:8px; cursor:pointer; font-size:13px; }
+        .meal-content,.latin-content { line-height:1.8; font-size:calc(16px * var(--zoom)); color:var(--text); }
+        .ayah { margin-bottom:20px; padding:15px; background:var(--card); border-radius:8px; border-left:4px solid var(--accent); }
+        .ayah-number { display:inline-block; background:var(--accent); color:#fff; padding:4px 8px; border-radius:50%; font-size:12px; margin-right:10px; }
+        .ayah-arabic { font-size:calc(26px * var(--zoom)); font-family:var(--arabic-font); text-align:right; direction:rtl; margin:10px 0; line-height:2.1; color:var(--text); }
+        .ayah-translation { color:var(--muted); font-size:calc(15px * var(--zoom)); }
+        .latin-item { background:var(--card); border-radius:8px; padding:10px 15px; margin-bottom:8px; color:var(--text); font-style:italic; font-size:calc(16px * var(--zoom)); }
+        .latin-item b { color:var(--accent); font-style:normal; margin-right:8px; }
+        .search-input { flex:1; min-width:200px; padding:12px; border-radius:8px; border:2px solid var(--accent); background:var(--card); color:var(--text); font-size:16px; }
+        .list-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:8px; max-height:50vh; overflow:auto; }
+        .list-item { color:var(--text); padding:10px 12px; border-radius:8px; cursor:pointer; border-left:4px solid var(--accent); font-size:14px; display:flex; justify-content:space-between; align-items:center; gap:6px; }
+        .sajda-mark { color:var(--gold); font-weight:bold; font-size:18px; text-shadow:0 0 6px rgba(212,175,55,.6); }
+        .list-note { margin-top:10px; font-size:12px; color:var(--muted); }
+        .audio-player { background:linear-gradient(135deg,var(--accent) 0%,var(--accent2) 100%); color:#fff; padding:20px; border-radius:12px; margin-bottom:20px; }
+        .audio-controls { display:flex; align-items:center; gap:15px; justify-content:center; }
+        .audio-btn { background:rgba(255,255,255,.2); border:2px solid #fff; color:#fff; width:50px; height:50px; border-radius:50%; cursor:pointer; font-size:20px; display:flex; align-items:center; justify-content:center; }
+        .audio-progress { height:6px; background:rgba(0,0,0,.15); border-radius:3px; overflow:hidden; margin-top:15px; }
+        .audio-progress-bar { height:100%; background:#fff; width:0%; }
+        .settings-panel { background:var(--panel); border-radius:12px; padding:20px; margin-bottom:20px; display:none; }
+        .settings-panel.active { display:block; }
+        .setting-group { margin-bottom:20px; }
+        .setting-label { font-weight:bold; color:var(--accent); margin-bottom:8px; display:block; }
+        .setting-options { display:flex; gap:10px; flex-wrap:wrap; }
+        .setting-option { background:var(--card); border:2px solid var(--accent); color:var(--text); padding:10px 20px; border-radius:8px; cursor:pointer; }
+        .setting-option.active,.mini-btn.active { background:linear-gradient(135deg,#e0a458,#c98a2e); border-color:#ffd98a; color:#fff; box-shadow:0 0 14px var(--goldglow); }
+        button,.list-item,.sajda-item,.lang-item { transform-style:preserve-3d; }
+        @keyframes press3d { 0%{transform:perspective(600px) rotateX(0) scale(1)} 40%{transform:perspective(600px) rotateX(14deg) scale(.92) translateY(3px)} 100%{transform:perspective(600px) rotateX(0) scale(1)} }
+        .pressed { animation:press3d .4s ease; box-shadow:0 0 18px 5px var(--goldglow) !important; }
+        .toast { position:fixed; bottom:20px; left:50%; transform:translateX(-50%); background:var(--accent); color:#fff; padding:15px 30px; border-radius:8px; z-index:1000; display:none; max-width:90%; text-align:center; }
+        .toast.show { display:block; animation:slideUp .3s ease-out; }
+        @keyframes slideUp { from{transform:translateX(-50%) translateY(100px);opacity:0} to{transform:translateX(-50%) translateY(0);opacity:1} }
+        .sajda-list { background:var(--panel2); border:2px solid var(--accent); border-radius:12px; padding:20px; margin-bottom:20px; }
+        .sajda-title { font-size:18px; font-weight:bold; color:var(--accent); margin-bottom:15px; }
+        .sajda-item { background:var(--card); color:var(--text); padding:12px; border-radius:8px; margin-bottom:8px; cursor:pointer; border-left:4px solid var(--accent); }
+        #offlineStatus { margin-top:8px; color:var(--muted); font-size:13px; }
+        .info-card { background:var(--panel2); border:2px solid var(--accent); border-radius:12px; padding:20px; margin-bottom:20px; text-align:center; color:var(--text); }
+        .info-card h3 { color:var(--accent); margin:10px 0; }
+        .info-card .ar { font-family:var(--arabic-font); font-size:22px; direction:rtl; }
+        .info-card .ded { background:var(--card); border-radius:10px; padding:15px; margin:12px 0; font-style:italic; line-height:1.7; }
+        .info-card .src { text-align:left; background:var(--card); border-radius:10px; padding:15px; margin:12px 0; font-size:13px; line-height:1.9; }
+        .info-card .fatiha { color:#e0a458; font-weight:bold; font-size:18px; margin:10px 0; }
+        .qr-box { text-align:center; }
+        .qr-box img { background:#fff; padding:10px; border-radius:12px; }
+        .install-banner { position:fixed; bottom:15px; right:15px; left:15px; max-width:420px; margin:0 auto; z-index:1200; background:var(--card); border:2px solid #e0a458; border-radius:14px; padding:16px 18px; box-shadow:0 8px 24px rgba(0,0,0,.4); display:none; color:var(--text); }
+        .install-banner.show { display:block; }
+        .ded-footer { background:#191512; color:#cfc8bd; text-align:center; padding:35px 20px; margin-top:20px; }
+        .ded-footer .ar { font-family:var(--arabic-font); font-size:20px; color:#e8e0d0; direction:rtl; }
+        .ded-footer h3 { color:#fff; margin:14px 0; font-size:17px; }
+        .ded-footer p { max-width:700px; margin:0 auto; line-height:1.8; font-size:14px; }
+        .ded-footer .fatiha { color:#e58abe; font-weight:bold; margin:16px 0; }
+        .ded-footer .copy { display:inline-block; border:1px solid #4a443c; border-radius:20px; padding:8px 18px; font-size:12px; margin-top:10px; }
+        @media (max-width:768px) { .main-content{padding:10px;} header h1{font-size:18px;} .header-btn{padding:6px 10px;font-size:12px;} .nav-btn{padding:10px 16px;font-size:14px;} .action-btn{padding:12px 20px;font-size:14px;} }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📖 Ersenbox Kur'an-Dinle 26</h1>
+            <div class="header-buttons">
+                <div class="lang-wrap">
+                    <button class="header-btn" id="langBtn" onclick="toggleLangMenu(event)">🇹🇷</button>
+                    <div class="lang-menu" id="langMenu">
+                        <div class="lang-item" onclick="setLang('tr')"><span class="flag">🇹🇷</span> Türkçe</div>
+                        <div class="lang-item" onclick="setLang('en')"><span class="flag">🇬🇧</span> English</div>
+                        <div class="lang-item" onclick="setLang('de')"><span class="flag">🇩🇪</span> Deutsch</div>
+                        <div class="lang-item" onclick="setLang('fr')"><span class="flag">🇫🇷</span> Français</div>
+                    </div>
+                </div>
+                <button class="header-btn" id="surahBtn" onclick="toggleSurahList()">📚 Sure</button>
+                <button class="header-btn" id="juzBtn" onclick="toggleJuzList()">📖 Cüz</button>
+                <button class="header-btn" id="searchBtn" onclick="toggleSearch()">🔍 Ara</button>
+                <button class="header-btn" id="themeBtn" onclick="toggleDarkMode()">🌙</button>
+                <button class="header-btn" id="bookmarkBtn" onclick="saveBookmark()">🔖</button>
+                <button class="header-btn" id="sajdahHeaderBtn" onclick="showSajdaAyat()">۩ Secde</button>
+                <button class="header-btn" id="qrBtn" onclick="toggleQR()">📱 QR</button>
+                <button class="header-btn" id="installBtn" onclick="installApp()">📲 Kur</button>
+                <button class="header-btn" id="infoBtn" onclick="toggleInfo()">ℹ️ Info</button>
+                <button class="header-btn" id="settingsHeaderBtn" onclick="toggleSettings()">⚙️ Ayarlar</button>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <div class="list-panel" id="searchPanel" style="display:none;">
+                <div class="sajda-title" id="searchTitleEl">🔍 Sure / Cüz Ara</div>
+                <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                    <input id="searchInput" class="search-input" placeholder="Örn: Yasin, Mülk, 36, Cüz 5" onkeydown="if(event.key==='Enter')doSearch()">
+                    <button class="nav-btn" onclick="doSearch()">🔍 Bul</button>
+                </div>
+                <div class="setting-options" id="searchSuggest" style="margin-top:12px;"></div>
+            </div>
+
+            <div class="list-panel" id="surahPanel" style="display:none;">
+                <div class="sajda-title" id="surahTitleEl">📚 Sure Listesi (114)</div>
+                <div class="list-grid" id="surahContent"></div>
+                <div class="list-note" id="surahNoteEl"><span class="sajda-mark">۩</span> = içinde secde ayeti var</div>
+            </div>
+
+            <div class="list-panel" id="juzPanel" style="display:none;">
+                <div class="sajda-title" id="juzTitleEl">📖 Cüz Listesi (30)</div>
+                <div class="list-grid" id="juzContent"></div>
+                <div class="list-note" id="juzNoteEl"><span class="sajda-mark">۩</span> = içinde secde ayeti var</div>
+            </div>
+
+            <div class="info-card" id="qrPanel" style="display:none;">
+                <div class="sajda-title" id="qrTitleEl">📱 QR Kod ile Uygulamayı Al</div>
+                <div class="qr-box">
+                    <img id="qrImg" alt="QR" width="220" height="220">
+                    <p id="qrTextEl" style="margin-top:10px;font-size:13px;color:var(--muted);"></p>
+                </div>
+            </div>
+
+            <div class="info-card" id="infoPanel" style="display:none;"></div>
+
+            <div class="page-nav">
+                <button class="nav-btn" id="prevBtn" onclick="previousPage()">◀ Önceki</button>
+                <div class="page-info">
+                    <div class="page-display" id="pageDisplay">1 / 604</div>
+                    <div class="page-title" id="pageTitle">Al-Fatiha</div>
+                </div>
+                <button class="nav-btn" id="nextBtn" onclick="nextPage()">Sonraki ▶</button>
+            </div>
+
+            <div class="zoom-bar">
+                <button class="zoom-btn" onclick="zoomChange(-0.1)">A−</button>
+                <span class="zoom-label" id="zoomLabel">%100</span>
+                <button class="zoom-btn" onclick="zoomChange(0.1)">A+</button>
+            </div>
+
+            <div class="mushaf-container" id="mushafContainer">
+                <div class="loader" id="loader"><div class="spinner"></div></div>
+                <img id="mushafImage" alt="Kur'an Sayfası" decoding="async">
+            </div>
+
+            <div class="tajweed-container" id="tajweedContainer"></div>
+
+            <div class="action-buttons">
+                <button class="action-btn" id="mealBtn" onclick="toggleMeal()">📖 Meal</button>
+                <button class="action-btn" id="listenBtn" onclick="toggleAudio()">▶ Dinle</button>
+                <button class="action-btn" id="latinBtn" onclick="toggleLatin()">🔤 Latince</button>
+            </div>
+
+            <div class="meal-container" id="mealContainer" style="display:none;">
+                <div class="meal-header"><div class="meal-title" id="mealTitleEl">📖 Meal</div></div>
+                <div class="meal-content" id="mealContent"></div>
+            </div>
+
+            <div class="latin-container" id="latinContainer" style="display:none;">
+                <div class="meal-header">
+                    <div class="meal-title" id="latinTitleEl">🔤 Latince Okunuş</div>
+                    <div>
+                        <button class="mini-btn active" data-group="latinmode" data-value="tr" onclick="setLatinMode('tr')">🇹🇷 Türkçe Okunuş</button>
+                        <button class="mini-btn" data-group="latinmode" data-value="en" onclick="setLatinMode('en')">🇬🇧 EN Transliteration</button>
+                    </div>
+                </div>
+                <div class="latin-content" id="latinContent"></div>
+                <div style="margin-top:10px;font-size:11px;color:var(--muted);">Kaynak: AlQuran Cloud — en.transliteration</div>
+            </div>
+
+            <div class="audio-player" id="audioPlayer" style="display:none;">
+                <div class="audio-controls">
+                    <button class="audio-btn" onclick="previousAyah()">⏮</button>
+                    <button class="audio-btn" id="playPauseBtn" onclick="togglePlay()">▶</button>
+                    <button class="audio-btn" onclick="nextAyah()">⏭</button>
+                </div>
+                <div class="audio-progress"><div class="audio-progress-bar" id="audioProgressBar"></div></div>
+                <div style="text-align:center;margin-top:10px;" id="audioInfo">Alafasy - 0:00 / 0:00</div>
+            </div>
+
+            <div class="settings-panel" id="settingsPanel">
+                <div class="setting-group"><button class="setting-option" id="gotoBookmarkBtn" style="display:none;" onclick="gotoBookmark()"></button></div>
+                <div class="setting-group">
+                    <label class="setting-label" id="offlineLabel">⬇️ Çevrimdışı (Offline) Modu</label>
+                    <div class="setting-options">
+                        <button class="setting-option" onclick="downloadPageOfflineUI()">📥 Bu Sayfayı İndir</button>
+                        <button class="setting-option" onclick="downloadRangeOffline(1,20)">📦 1–20</button>
+                        <button class="setting-option" onclick="downloadRangeOffline(1,604)">🗂️ Tümü (604)</button>
+                        <button class="setting-option" onclick="cancelOffline()">⛔ İptal</button>
+                        <button class="setting-option" onclick="clearAllCache()">🗑️ Önbelleği Temizle</button>
+                    </div>
+                    <div class="setting-options" style="margin-top:10px;">
+                        <button class="setting-option active" data-group="oq" data-value="ekonomi" onclick="setOfflineQuality('ekonomi')">🪶 Ekonomik (az yer)</button>
+                        <button class="setting-option" data-group="oq" data-value="yuksek" onclick="setOfflineQuality('yuksek')">💎 Yüksek Kalite</button>
+                    </div>
+                    <div class="audio-progress" style="margin-top:10px;height:8px;"><div class="audio-progress-bar" id="offlineBar" style="background:var(--accent);width:0%;"></div></div>
+                    <div id="offlineStatus"></div>
+                </div>
+                <div class="setting-group">
+                    <label class="setting-label" id="followLabel">🎯 Takip (Okunan Ayet Vurgusu)</label>
+                    <div class="setting-options"><button class="setting-option active" id="followBtn" onclick="toggleFollow()">Okunan ayeti vurgula + takip et</button></div>
+                </div>
+                <div class="setting-group">
+                    <label class="setting-label" id="styleLabel">🖼️ Mushaf Stili</label>
+                    <div class="setting-options">
+                        <button class="setting-option active" data-group="style" data-value="klasik" onclick="setMushafStyle('klasik')">📖 Klasik</button>
+                        <button class="setting-option" data-group="style" data-value="sepya" onclick="setMushafStyle('sepya')">🎨 Sepya</button>
+                        <button class="setting-option" data-group="style" data-value="negatif" onclick="setMushafStyle('negatif')">🌙 Negatif</button>
+                    </div>
+                </div>
+                <div class="setting-group">
+                    <label class="setting-label" id="tajweedLabel">🎨 Tecvidli Metin</label>
+                    <div class="setting-options"><button class="setting-option" id="tajweedBtn" onclick="toggleTajweed()">Renkli tecvid gösterimi</button></div>
+                </div>
+                <div class="setting-group">
+                    <label class="setting-label" id="speedLabel">⚡ Oynatma Hızı</label>
+                    <div class="setting-options">
+                        <button class="setting-option" data-group="speed" data-value="0.5" onclick="setSpeed(0.5)">0.5x</button>
+                        <button class="setting-option" data-group="speed" data-value="0.75" onclick="setSpeed(0.75)">0.75x</button>
+                        <button class="setting-option active" data-group="speed" data-value="1" onclick="setSpeed(1)">1x</button>
+                        <button class="setting-option" data-group="speed" data-value="1.25" onclick="setSpeed(1.25)">1.25x</button>
+                        <button class="setting-option" data-group="speed" data-value="1.5" onclick="setSpeed(1.5)">1.5x</button>
+                        <button class="setting-option" data-group="speed" data-value="2" onclick="setSpeed(2)">2x</button>
+                    </div>
+                </div>
+                <div class="setting-group">
+                    <label class="setting-label" id="mealSourceLabel">📚 Meal Kaynağı</label>
+                    <div class="setting-options">
+                        <button class="setting-option active" data-group="meal" data-value="tr.diyanet" onclick="setMeal('tr.diyanet')">🇹🇷 Diyanet</button>
+                        <button class="setting-option" data-group="meal" data-value="tr.yazir" onclick="setMeal('tr.yazir')">📚 Elmalılı</button>
+                        <button class="setting-option" data-group="meal" data-value="en.sahih" onclick="setMeal('en.sahih')">🇬 English</button>
+                        <button class="setting-option" data-group="meal" data-value="de.aburida" onclick="setMeal('de.aburida')">🇩🇪 Deutsch</button>
+                        <button class="setting-option" data-group="meal" data-value="fr.hamidullah" onclick="setMeal('fr.hamidullah')">🇫🇷 Français</button>
+                    </div>
+                </div>
+                <div class="setting-group">
+                    <label class="setting-label" id="fontLabel">🔤 Yazı Tipi</label>
+                    <div class="setting-options">
+                        <button class="setting-option active" data-group="font" data-value="uthmani" onclick="setFont('uthmani')">Uthmani</button>
+                        <button class="setting-option" data-group="font" data-value="noto" onclick="setFont('noto')">Noto Naskh</button>
+                        <button class="setting-option" data-group="font" data-value="amiri" onclick="setFont('amiri')">Amiri</button>
+                        <button class="setting-option" data-group="font" data-value="scheherazade" onclick="setFont('scheherazade')">Scheherazade</button>
+                    </div>
+                </div>
+                <div class="setting-group">
+                    <label class="setting-label" id="reciterLabel">🎙️ Okuyucu</label>
+                    <div class="setting-options" id="reciterOptions"></div>
+                </div>
+            </div>
+
+            <div class="sajda-list" id="sajdaList" style="display:none;">
+                <div class="sajda-title" id="sajdaTitleEl">۩ Secde Ayetleri (Hanefi — 14 Ayet)</div>
+                <div id="sajdaContent"></div>
+            </div>
+        </div>
+
+        <footer class="ded-footer">
+            <div class="ar">رَحِمَهُمُ اللَّهُ وَرَضِيَ عَنْهُمْ</div>
+            <h3>Merhum Hacı Hamit Sert · Merhume Hacı Nurgüzel Sert ve ailesi</h3>
+            <p>Merhum Hacı Hamit Sert ve merhume Hacı Nurgüzel Sert'in ve Bakıcı Ailelerinin ruhlarına ve tüm Müslüman kardeşlerimizin ruhlarına ithaf edilmiştir. Allah onlara rahmet eylesin, kabirlerini nur ile doldursun. Bu platform onların ruhuna sadaka-i cariye olsun inşallah. 🤲</p>
+            <div class="fatiha">🌺 Ruhlarına El-Fatiha</div>
+            <div class="copy">© 2026 Telif hakkı ErsenBox — Ersen Bakıcı</div>
+        </footer>
+    </div>
+
+    <div class="install-banner" id="installBanner">
+        📲 <b>Ersenbox Kur'an-Dinle 26</b> — <span id="installBannerText">uygulamayı cihazınıza kurmak ister misiniz?</span>
+        <div id="installHint" style="font-size:12px;color:var(--muted);margin-top:6px;"></div>
+        <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;">
+            <button class="nav-btn" onclick="installApp()">📲 Yükle</button>
+            <button class="mini-btn" onclick="hideInstallBanner()">✕ Şimdi değil</button>
+        </div>
+    </div>
+    <div class="toast" id="toast"></div>
+    <audio id="audioEl"></audio>
+
+    <script>
+        /* ================= SABİTLER ================= */
+        const APP_URL = 'https://kuran-dinle-26.pages.dev';   // D1: QR hedefi
+        let currentPage = 1; const totalPages = 604;
+        let currentLang = localStorage.getItem('ersenbox_lang') || 'tr';
+        let currentAyahIndex = 0, currentSurah = 1, pageAyahs = [], isPlaying = false, autoPlay = false, loadToken = 0;
+        let latinVisible = localStorage.getItem('ersenbox_latin') === '1';
+        let latinMode = localStorage.getItem('ersenbox_latinmode') || 'tr';
+        let darkMode = localStorage.getItem('ersenbox_dark') === '1';
+        let lastLatinPage = 0, mushafStyle = localStorage.getItem('ersenbox_style') || 'klasik';
+        let zoom = parseFloat(localStorage.getItem('ersenbox_zoom')) || 1;
+        let brIndex = 0, offlineCancel = false, offlineBusy = false;
+        let offlineQuality = localStorage.getItem('ersenbox_oq') || 'ekonomi';
+        let deferredPrompt = null;
+
+        const settings = Object.assign({ meal:'tr.diyanet', reciter:'ar.alafasy', speed:1, font:'uthmani', tajweed:false, follow:true }, JSON.parse(localStorage.getItem('ersenbox_settings') || '{}'));
+        const saveSettings = () => localStorage.setItem('ersenbox_settings', JSON.stringify(settings));
+
+        const RECITERS = {
+            'ar.alafasy':{name:'Mishary Alafasy',br:[128,64]}, 'ar.abdulbasitmurattal':{name:'Abdul Basit',br:[192,64]},
+            'ar.abdurrahmaansudais':{name:'Abdurrahman Sudais',br:[192,64]}, 'ar.saoodshuraym':{name:'Saud Shuraym',br:[64,128]},
+            'ar.mahermuaiqly':{name:'Maher Al-Muaiqly',br:[64,128]}, 'ar.husary':{name:'Mahmoud Khalil Husary',br:[128,64]},
+            'ar.minshawi':{name:'Al-Minshawi',br:[128,64]}, 'ar.hudhaify':{name:'Al-Hudhaify',br:[128,64]},
+            'ar.muhammadayyoub':{name:'Muhammad Ayyoub',br:[64,128]}, 'ar.yasserdossari':{name:'Yasser Dossari',br:[128,64]}
+        };
+        const FLAG = { tr:'🇹🇷', en:'🇬🇧', de:'🇩', fr:'🇷' };
+        const SURAH_PAGES = [1,2,50,77,106,128,151,177,187,208,221,235,249,255,262,267,282,293,305,312,322,332,342,350,359,367,377,385,396,404,411,415,418,428,434,440,446,453,458,467,477,483,489,496,499,502,507,511,515,518,520,523,526,528,531,534,537,542,545,549,551,553,554,556,558,560,562,564,566,568,570,572,574,575,577,578,580,582,583,585,586,587,587,589,590,591,591,592,593,594,595,595,596,596,597,597,598,598,599,599,600,600,601,601,601,602,602,602,603,603,603,604,604,604];
+        const SURAH_END = SURAH_PAGES.map((p,i) => i < 113 ? SURAH_PAGES[i+1] - 1 : 604);
+        const JUZ_PAGES = [1,22,42,62,82,102,121,142,162,182,201,222,242,262,282,302,322,342,362,382,402,422,442,462,482,502,522,542,562,582];
+        const SAJDA_AYATS = [[7,206],[13,15],[16,49],[17,107],[19,58],[22,18],[25,60],[27,25],[32,15],[38,24],[41,37],[53,62],[84,21],[96,19]];
+        const SAJDA_SURAHS = SAJDA_AYATS.map(s => s[0]);
+        const SAJDA_JUZ = [9,13,14,15,16,17,19,21,23,24,27,30];
+        const FONT_MAP = { uthmani:"'Amiri',serif", noto:"'Noto Naskh Arabic',serif", amiri:"'Amiri',serif", scheherazade:"'Scheherazade New',serif" };
+
+        const INFO = {
+            tr:{t:'Uygulama Hakkında',c:'Yapımcı / Creator',cv:'Ersen Bakıcı — ErsenBox',d:'Niyet ve İthaf / Intention & Dedication',dt:'Merhum Hacı Hamit Sert ve merhume Hacı Nurgüzel Sert\'in ve Bakıcı Ailelerinin ruhlarına ve tüm Müslüman kardeşlerimizin ruhlarına ithaf edilmiştir. Allah onlara rahmet eylesin, kabirlerini nur ile doldursun. Bu platform onların ruhuna sadaka-i cariye olsun inşallah. 🤲',f:'🌺 Ruhlarına El-Fatiha',k:'Telif Hakkı / Copyright',kt:'Bu uygulama tamamen ücretsizdir ve hayır amaçlıdır. Reklam içermez. Telif hakkı ErsenBox\'a aittir. © 2026',s:'Kullanılan Kaynaklar / Sources Used',sl:['Kur\'an metni & meal: AlQuran Cloud API (api.alquran.cloud)','Latince okunuş (transkript): AlQuran Cloud — en.transliteration','Ses (tilavet): Islamic Network CDN (cdn.islamic.network)','Mushaf sayfa görselleri: quran.com-images (GitHub: GovarJabbar/Quran-PNG · jsDelivr) & quran.islam-db.com','Arapça yazı tipleri: Google Fonts (Amiri, Noto Naskh Arabic, Scheherazade New)','QR Kod: QR Server API (api.qrserver.com)','Barındırma / PWA: Cloudflare Pages'],l:'Dil / Language'},
+            en:{t:'About the App',c:'Creator',cv:'Ersen Bakıcı — ErsenBox',d:'Intention & Dedication',dt:'Dedicated to the souls of the late Hacı Hamit Sert and the late Hacı Nurgüzel Sert and the Bakıcı families, and to all our Muslim brothers and sisters. May Allah have mercy on them and fill their graves with light. May this platform be a continuing charity for their souls. 🤲',f:'🌺 Al-Fatiha for their souls',k:'Copyright',kt:'This app is completely free and for charity. No ads. Copyright © 2026 ErsenBox.',s:'Sources Used',sl:['Quran text & translations: AlQuran Cloud API','Latin transliteration: AlQuran Cloud — en.transliteration','Recitation audio: Islamic Network CDN','Mushaf page images: quran.com-images (GitHub/jsDelivr) & quran.islam-db.com','Arabic fonts: Google Fonts','QR code: QR Server API','Hosting / PWA: Cloudflare Pages'],l:'Language'},
+            de:{t:'Über die App',c:'Ersteller',cv:'Ersen Bakıcı — ErsenBox',d:'Absicht & Widmung',dt:'Gewidmet den Seelen der verstorbenen Hacı Hamit Sert und Hacı Nurgüzel Sert sowie den Familien Bakıcı und allen muslimischen Geschwistern. Möge Allah ihnen barmherzig sein und ihre Gräber mit Licht erfüllen. 🤲',f:'🌺 Al-Fatiha für ihre Seelen',k:'Urheberrecht',kt:'Diese App ist völlig kostenlos und gemeinnützig. Keine Werbung. Copyright © 2026 ErsenBox.',s:'Verwendete Quellen',sl:['Korantext & Übersetzungen: AlQuran Cloud API','Lateinische Umschrift: AlQuran Cloud — en.transliteration','Rezitationsaudio: Islamic Network CDN','Mushaf-Seitenbilder: quran.com-images (GitHub/jsDelivr) & quran.islam-db.com','Arabische Schriften: Google Fonts','QR-Code: QR Server API','Hosting / PWA: Cloudflare Pages'],l:'Sprache'},
+            fr:{t:'À propos de l\'application',c:'Créateur',cv:'Ersen Bakıcı — ErsenBox',d:'Intention & Dédicace',dt:'Dédié aux âmes de feu Hacı Hamit Sert et de feue Hacı Nurgüzel Sert ainsi qu\'aux familles Bakıcı et à tous nos frères et sœurs musulmans. Qu\'Allah leur accorde Sa miséricorde et remplisse leurs tombes de lumière. 🤲',f:'🌺 Al-Fatiha pour leurs âmes',k:'Droits d\'auteur',kt:'Cette application est entièrement gratuite et caritative. Sans publicité. Copyright © 2026 ErsenBox.',s:'Sources utilisées',sl:['Texte coranique & traductions : API AlQuran Cloud','Translittération latine : AlQuran Cloud — en.transliteration','Audio de récitation : CDN Islamic Network','Images du mushaf : quran.com-images (GitHub/jsDelivr) & quran.islam-db.com','Polices arabes : Google Fonts','QR code : API QR Server','Hébergement / PWA : Cloudflare Pages'],l:'Langue'}
+        };
+        let infoLang = currentLang;
+
+        const I18N = {
+            tr:{prev:'◀ Önceki',next:'Sonraki ▶',meal:'📖 Meal',listen:'▶ Dinle',latin:'🔤 Latince',sajdah:'۩ Secde',settings:'⚙️ Ayarlar',speed:'⚡ Oynatma Hızı',mealSource:'📚 Meal Kaynağı',font:'🔤 Yazı Tipi',reciter:'🎙️ Okuyucu',tajweed:'🎨 Tecvidli Metin',tajweedDesc:'Renkli tecvid gösterimi',sajdahTitle:'۩ Secde Ayetleri (Hanefi — 14 Ayet)',mealTitle:'📖 Meal',latinTitle:'🔤 Latince Okunuş',loading:'Yükleniyor...',mealError:'Meal yüklenemedi',latinError:'Transkript yüklenemedi',loadError:'❌ Sayfa yüklenemedi',loaded:'✅ Sayfa %s yüklendi',bookmarkSaved:'🔖 Sayfa %s kaydedildi',bookmarkRemoved:'🗑️ Kayıt kaldırıldı',gotoBookmark:'🔖 Kayıtlı Sayfaya Git (Sayfa %s)',noBookmark:'🔖 Kayıtlı sayfa yok',themeOn:'🌙 Gece modu',themeOff:'☀️ Gündüz modu',langChanged:'Dil: Türkçe',tajweedOn:'🎨 Tecvid AÇIK',tajweedOff:'🎨 Tecvid kapalı',speedSet:'⚡ Hız: %sx',style:'🖼️ Mushaf Stili',styleSet:'🖼️ Stil: %s',reciterSet:'🎙️ %s',fontSet:'🔤 %s',mealSet:'📚 %s',follow:'🎯 Takip',followDesc:'Okunan ayeti vurgula + takip et',followOn:'🎯 Takip AÇIK',followOff:'🎯 Takip kapalı',audioFail:'❌ Ses yok: %s',offline:'⬇️ Çevrimdışı Modu',surah:'📚 Sure',juz:'📖 Cüz',search:'🔍 Ara',searchTitle:'🔍 Sure / Cüz Ara',searchPh:'Örn: Yasin, Mulk, 36, Cüz 5',surahTitle:'📚 Sure Listesi (114)',juzTitle:'📖 Cüz Listesi (30)',listNote:'içinde secde ayeti var',notFound:'❌ Bulunamadı',surahEnd:'✅ Sure bitti',qrTitle:'📱 QR Kod ile Uygulamayı Al',qrText:'Bu QR kodu başka bir telefonla tarayın → https://kuran-dinle-26.pages.dev açılır ve kurulabilir.',installText:'uygulamayı cihazınıza kurmak ister misiniz?',suggest:'Öneriler:',installHint:''},
+            en:{prev:'◀ Previous',next:'Next ▶',meal:'📖 Translation',listen:'▶ Listen',latin:'🔤 Latin',sajdah:'۩ Sajdah',settings:'⚙️ Settings',speed:'⚡ Speed',mealSource:'📚 Source',font:'🔤 Font',reciter:'🎙️ Reciter',tajweed:'🎨 Tajweed',tajweedDesc:'Colored tajweed',sajdahTitle:'۩ Sajdah Verses (14)',mealTitle:'📖 Translation',latinTitle:'🔤 Transliteration',loading:'Loading...',mealError:'Failed',latinError:'Failed',loadError:'❌ Load failed',loaded:'✅ Page %s',bookmarkSaved:'🔖 Saved %s',bookmarkRemoved:'🗑️ Removed',gotoBookmark:'🔖 Bookmark (%s)',noBookmark:'🔖 No bookmark',themeOn:'🌙 Night',themeOff:'☀️ Day',langChanged:'Language: English',tajweedOn:'🎨 ON',tajweedOff:'🎨 Off',speedSet:'⚡ %sx',style:'🖼️ Style',styleSet:'🖼️ %s',reciterSet:'🎙️ %s',fontSet:'🔤 %s',mealSet:'📚 %s',follow:'🎯 Follow',followDesc:'Highlight playing ayah',followOn:'🎯 ON',followOff:'🎯 Off',audioFail:'❌ Audio missing: %s',offline:'⬇️ Offline',surah:'📚 Surah',juz:'📖 Juz',search:'🔍 Search',searchTitle:'🔍 Search Surah / Juz',searchPh:'e.g. Yasin, 36, Juz 5',surahTitle:'📚 Surah List (114)',juzTitle:'📖 Juz List (30)',listNote:'contains sajdah verse',notFound:'❌ Not found',surahEnd:'✅ Surah finished',qrTitle:'📱 Get the App via QR',qrText:'Scan with another phone → https://kuran-dinle-26.pages.dev opens and can be installed.',installText:'would you like to install the app?',suggest:'Suggestions:',installHint:''},
+            de:{prev:'◀ Zurück',next:'Weiter ▶',meal:'📖 Übersetzung',listen:'▶ Anhören',latin:'🔤 Latein',sajdah:'۩ Sajda',settings:'⚙️ Einstellungen',speed:'⚡ Tempo',mealSource:'📚 Quelle',font:'🔤 Schriftart',reciter:'🎙️ Rezitator',tajweed:'🎨 Tadschwid',tajweedDesc:'Farbiges Tadschwid',sajdahTitle:'۩ Sajda-Verse (14)',mealTitle:'📖 Übersetzung',latinTitle:'🔤 Umschrift',loading:'Laden...',mealError:'Fehler',latinError:'Fehler',loadError:'❌ Ladefehler',loaded:'✅ Seite %s',bookmarkSaved:'🔖 Seite %s',bookmarkRemoved:'🗑️ Entfernt',gotoBookmark:'🔖 Lesezeichen (%s)',noBookmark:'🔖 Kein Lesezeichen',themeOn:'🌙 Nacht',themeOff:'☀️ Tag',langChanged:'Sprache: Deutsch',tajweedOn:'🎨 AN',tajweedOff:'🎨 Aus',speedSet:'⚡ %sx',style:'🖼️ Stil',styleSet:'🖼️ %s',reciterSet:'🎙️ %s',fontSet:'🔤 %s',mealSet:'📚 %s',follow:'🎯 Folgen',followDesc:'Vers hervorheben',followOn:'🎯 AN',followOff:'🎯 Aus',audioFail:'❌ Audio fehlt: %s',offline:'⬇️ Offline',surah:'📚 Sure',juz:'📖 Juz',search:'🔍 Suche',searchTitle:'🔍 Sure / Juz suchen',searchPh:'z.B. Yasin, 36, Juz 5',surahTitle:'📚 Surenliste (114)',juzTitle:'📖 Juz-Liste (30)',listNote:'mit Sajda-Vers',notFound:'❌ Nicht gefunden',surahEnd:'✅ Sure beendet',qrTitle:'📱 App per QR',qrText:'Mit anderem Telefon scannen → https://kuran-dinle-26.pages.dev öffnet sich.',installText:'App installieren?',suggest:'Vorschläge:',installHint:''},
+            fr:{prev:'◀ Précédent',next:'Suivant ▶',meal:'📖 Traduction',listen:'▶ Écouter',latin:'🔤 Latin',sajdah:'۩ Sajda',settings:'⚙️ Paramètres',speed:'⚡ Vitesse',mealSource:'📚 Source',font:'🔤 Police',reciter:'🎙️ Récitateur',tajweed:'🎨 Tajwid',tajweedDesc:'Tajwid coloré',sajdahTitle:'۩ Versets de sajda (14)',mealTitle:'📖 Traduction',latinTitle:'🔤 Translittération',loading:'Chargement...',mealError:'Échec',latinError:'Échec',loadError:'❌ Échec',loaded:'✅ Page %s',bookmarkSaved:'🔖 Page %s',bookmarkRemoved:'🗑️ Retiré',gotoBookmark:'🔖 Signet (%s)',noBookmark:'🔖 Aucun signet',themeOn:'🌙 Nuit',themeOff:'☀️ Jour',langChanged:'Langue : Français',tajweedOn:'🎨 ON',tajweedOff:'🎨 Off',speedSet:'⚡ %sx',style:'🖼️ Style',styleSet:'🖼️ %s',reciterSet:'🎙️ %s',fontSet:'🔤 %s',mealSet:'📚 %s',follow:'🎯 Suivi',followDesc:'Surligner le verset',followOn:'🎯 ON',followOff:'🎯 Off',audioFail:'❌ Audio introuvable : %s',offline:'⬇️ Hors ligne',surah:'📚 Sourate',juz:'📖 Juz',search:'🔍 Rechercher',searchTitle:'🔍 Rechercher',searchPh:'ex. Yasin, 36, Juz 5',surahTitle:'📚 Sourates (114)',juzTitle:'📖 Juz (30)',listNote:'contient verset de sajda',notFound:'❌ Introuvable',surahEnd:'✅ Sourate terminée',qrTitle:'📱 App via QR',qrText:'Scannez → https://kuran-dinle-26.pages.dev s\'ouvre et peut être installée.',installText:'installer l\'application ?',suggest:'Suggestions :',installHint:''}
+        };
+        const T = (key, val) => { let s = (I18N[currentLang] || I18N.tr)[key] || I18N.tr[key] || key; return val !== undefined ? s.replace('%s', val) : s; };
+
+        const SURAH_TR = ['','Fâtiha','Bakara','Âl-i İmrân','Nisâ','Mâide','En\'âm','A\'râf','Enfâl','Tevbe','Yûnus','Hûd','Yûsuf','Ra\'d','İbrâhîm','Hicr','Nahl','İsrâ','Kehf','Meryem','Tâhâ','Enbiyâ','Hac','Mü\'minûn','Nûr','Furkân','Şuarâ','Neml','Kasas','Ankebût','Rûm','Lokmân','Secde','Ahzâb','Sebe\'','Fâtır','Yâsîn','Sâffât','Sâd','Zümer','Mü\'min','Fussilet','Şûrâ','Zuhruf','Duhân','Câsiye','Ahkâf','Muhammed','Fetih','Hucurât','Kâf','Zâriyât','Tûr','Necm','Kamer','Rahmân','Vâkıa','Hadîd','Mücâdele','Haşr','Mümtehine','Saf','Cum\'a','Münâfikûn','Teğâbün','Talâk','Tahrîm','Mülk','Kalem','Hâkka','Meâric','Nûh','Cin','Müzzemmil','Müddessir','Kıyâmet','İnsân','Mürselât','Nebe\'','Nâziât','Abese','Tekvîr','İnfitâr','Mutaffifîn','İnşikâk','Bürûc','Târık','A\'lâ','Ğâşiye','Fecr','Beled','Şems','Leyl','Duhâ','İnşirâh','Tîn','Alak','Kadir','Beyyine','Zilzâl','Âdiyât','Kâria','Tekâsür','Asr','Hümeze','Fîl','Kureyş','Mâûn','Kevser','Kâfirûn','Nasr','Tebbet','İhlâs','Felak','Nâs'];
+
+        /* ================= 3D + IŞIK ================= */
+        document.addEventListener('click', (e) => {
+            const el = e.target.closest('button, .list-item, .sajda-item, .lang-item');
+            if (el) { el.classList.remove('pressed'); void el.offsetWidth; el.classList.add('pressed'); setTimeout(() => el.classList.remove('pressed'), 450); }
+        });
+        function openAndScroll(id, display) {
+            const el = document.getElementById(id);
+            el.style.display = display;
+            setTimeout(() => el.scrollIntoView({ behavior:'smooth', block:'start' }), 60);
+        }
+
+        function updateTexts() {
+            document.getElementById('prevBtn').textContent = T('prev');
+            document.getElementById('nextBtn').textContent = T('next');
+            document.getElementById('mealBtn').textContent = T('meal');
+            document.getElementById('listenBtn').textContent = T('listen');
+            document.getElementById('latinBtn').textContent = T('latin');
+            document.getElementById('sajdahHeaderBtn').textContent = T('sajdah');
+            document.getElementById('settingsHeaderBtn').textContent = T('settings');
+            document.getElementById('surahBtn').textContent = T('surah');
+            document.getElementById('juzBtn').textContent = T('juz');
+            document.getElementById('searchBtn').textContent = T('search');
+            document.getElementById('searchTitleEl').textContent = T('searchTitle');
+            document.getElementById('searchInput').placeholder = T('searchPh');
+            document.getElementById('surahTitleEl').textContent = T('surahTitle');
+            document.getElementById('juzTitleEl').textContent = T('juzTitle');
+            document.getElementById('surahNoteEl').innerHTML = `<span class="sajda-mark">۩</span> = ${T('listNote')}`;
+            document.getElementById('juzNoteEl').innerHTML = `<span class="sajda-mark">۩</span> = ${T('listNote')}`;
+            document.getElementById('speedLabel').textContent = T('speed');
+            document.getElementById('mealSourceLabel').textContent = T('mealSource');
+            document.getElementById('fontLabel').textContent = T('font');
+            document.getElementById('reciterLabel').textContent = T('reciter');
+            document.getElementById('tajweedLabel').textContent = T('tajweed');
+            document.getElementById('tajweedBtn').textContent = T('tajweedDesc');
+            document.getElementById('sajdaTitleEl').textContent = T('sajdahTitle');
+            document.getElementById('mealTitleEl').textContent = T('mealTitle');
+            document.getElementById('latinTitleEl').textContent = T('latinTitle');
+            document.getElementById('styleLabel').textContent = T('style');
+            document.getElementById('followLabel').textContent = T('follow');
+            document.getElementById('followBtn').textContent = T('followDesc');
+            document.getElementById('offlineLabel').textContent = T('offline');
+            document.getElementById('qrTitleEl').textContent = T('qrTitle');
+            document.getElementById('qrTextEl').textContent = T('qrText');
+            document.getElementById('installBannerText').textContent = T('installText');
+            updateBookmarkUI();
+        }
+        function toggleLangMenu(e) { e.stopPropagation(); document.getElementById('langMenu').classList.toggle('open'); }
+        document.addEventListener('click', (e) => { if (!e.target.closest('.lang-wrap')) document.getElementById('langMenu').classList.remove('open'); });
+        function setLang(lang) {
+            currentLang = lang; localStorage.setItem('ersenbox_lang', lang);
+            document.getElementById('langBtn').textContent = FLAG[lang];
+            document.getElementById('langMenu').classList.remove('open');
+            updateTexts(); renderInfo();
+            showToast(T('langChanged'));
+        }
+
+        /* ================= D3: AKILLI ARAMA ================= */
+        const normTR = (s) => (s || '').toLocaleLowerCase('tr')
+            .replace(/ü/g,'u').replace(/ö/g,'o').replace(/ı/g,'i').replace(/î/g,'i')
+            .replace(/ç/g,'c').replace(/ş/g,'s').replace(/ğ/g,'g').replace(/â/g,'a').replace(/û/g,'u')
+            .trim();
+        function lev(a,b) {
+            const d = [];
+            for (let i = 0; i <= a.length; i++) d[i] = [i];
+            for (let j = 0; j <= b.length; j++) d[0][j] = j;
+            for (let i = 1; i <= a.length; i++) for (let j = 1; j <= b.length; j++)
+                d[i][j] = Math.min(d[i-1][j]+1, d[i][j-1]+1, d[i-1][j-1]+(a[i-1]===b[j-1]?0:1));
+            return d[a.length][b.length];
+        }
+        function closeListPanels() { ['searchPanel','surahPanel','juzPanel'].forEach(id => document.getElementById(id).style.display = 'none'); }
+        function toggleSearch() { const p = document.getElementById('searchPanel'); const show = p.style.display === 'none'; closeListPanels(); if (show) { openAndScroll('searchPanel','block'); document.getElementById('searchInput').focus(); } else p.style.display = 'none'; }
+        function toggleSurahList() {
+            const show = document.getElementById('surahPanel').style.display === 'none'; closeListPanels();
+            if (show) {
+                if (!document.getElementById('surahContent').children.length) {
+                    document.getElementById('surahContent').innerHTML = SURAH_TR.slice(1).map((name, i) => {
+                        const n = i + 1; const mark = SAJDA_SURAHS.includes(n) ? '<span class="sajda-mark">۩</span>' : '';
+                        return `<div class="list-item" onclick="goPage(${SURAH_PAGES[i]})"><span>${n}. ${name}</span><span>${mark} <small>S.${SURAH_PAGES[i]}</small></span></div>`;
+                    }).join('');
+                }
+                openAndScroll('surahPanel','block');
+            }
+        }
+        function toggleJuzList() {
+            const show = document.getElementById('juzPanel').style.display === 'none'; closeListPanels();
+            if (show) {
+                if (!document.getElementById('juzContent').children.length) {
+                    document.getElementById('juzContent').innerHTML = JUZ_PAGES.map((pg, i) => {
+                        const n = i + 1; const mark = SAJDA_JUZ.includes(n) ? '<span class="sajda-mark">۩</span>' : '';
+                        return `<div class="list-item" onclick="goPage(${pg})"><span>Cüz ${n}</span><span>${mark} <small>S.${pg}</small></span></div>`;
+                    }).join('');
+                }
+                openAndScroll('juzPanel','block');
+            }
+        }
+        function goPage(p) { closeListPanels(); loadPage(p); window.scrollTo({ top:0, behavior:'smooth' }); }
+        function showSuggestions(qn) {
+            const box = document.getElementById('searchSuggest');
+            const sugg = [];
+            for (let i = 1; i <= 114 && sugg.length < 8; i++) {
+                const n = normTR(SURAH_TR[i]);
+                if (n.includes(qn) || qn.includes(n) || lev(n, qn) <= 3 || lev(n.slice(0, Math.max(3, qn.length)), qn) <= 2) sugg.push(i);
+            }
+            if (!sugg.length) { box.innerHTML = ''; return false; }
+            box.innerHTML = `<span style="color:var(--muted);font-size:13px;">${T('suggest')}</span> ` +
+                sugg.map(i => `<button class="mini-btn" onclick="goPage(${SURAH_PAGES[i-1]})">${SURAH_TR[i]}</button>`).join(' ');
+            return false;
+        }
+        function doSearch() {
+            const q = (document.getElementById('searchInput').value || '').trim().toLowerCase();
+            if (!q) return;
+            document.getElementById('searchSuggest').innerHTML = '';
+            const jm = q.match(/(cüz|cuz|juz|jüz)\s*(\d{1,2})/);
+            if (jm) { const j = parseInt(jm[2]); if (j >= 1 && j <= 30) { goPage(JUZ_PAGES[j-1]); showToast(`📖 Cüz ${j}`); return; } }
+            if (/^\d+$/.test(q)) {
+                const n = parseInt(q);
+                if (n >= 1 && n <= 114) { goPage(SURAH_PAGES[n-1]); showToast(`📚 ${SURAH_TR[n]}`); return; }
+                if (n >= 1 && n <= 604) { goPage(n); return; }
+            }
+            const qn = normTR(q);
+            for (let i = 1; i <= 114; i++) {
+                if (normTR(SURAH_TR[i]).includes(qn)) { goPage(SURAH_PAGES[i-1]); showToast(`📚 ${SURAH_TR[i]}`); return; }
+            }
+            // Tam eşleşme yok → öneriler
+            showSuggestions(qn);
+            showToast(T('notFound'));
+        }
+
+        /* ================= INFO + QR (D1) ================= */
+        function renderInfo() {
+            const d = INFO[infoLang] || INFO.tr;
+            document.getElementById('infoPanel').innerHTML = `
+                <h3>${d.t}</h3>
+                <div style="text-align:left;font-size:12px;color:var(--muted);margin:6px 0;">${d.c}</div>
+                <div style="font-weight:bold;">${d.cv}</div>
+                <div style="text-align:left;font-size:12px;color:var(--muted);margin:12px 0 6px;">${d.d}</div>
+                <div class="ded"><div class="ar">رَحِمَهُمُ اللَّهُ وَرَضِيَ عَنْهُمْ</div><br><b>Merhum Hacı Hamit Sert<br>Merhume Hacı Nurgüzel Sert</b><br><span style="font-size:13px;">ve ailesi</span><br><br>${d.dt}<div class="fatiha">${d.f}</div><div style="font-size:12px;">© 2026 ErsenBox — Ersen Bakıcı</div></div>
+                <div style="text-align:left;font-size:12px;color:var(--muted);margin:12px 0 6px;">${d.l}</div>
+                <div class="setting-options" style="justify-content:center;">
+                    <button class="mini-btn ${infoLang==='tr'?'active':''}" onclick="setInfoLang('tr')">TR</button>
+                    <button class="mini-btn ${infoLang==='en'?'active':''}" onclick="setInfoLang('en')">EN</button>
+                    <button class="mini-btn ${infoLang==='de'?'active':''}" onclick="setInfoLang('de')">DE</button>
+                    <button class="mini-btn ${infoLang==='fr'?'active':''}" onclick="setInfoLang('fr')">FR</button>
+                </div>
+                <div style="text-align:left;font-size:12px;color:var(--muted);margin:12px 0 6px;">${d.k}</div>
+                <div style="font-size:13px;">${d.kt}</div>
+                <div style="text-align:left;font-size:12px;color:var(--muted);margin:12px 0 6px;">${d.s}</div>
+                <div class="src">• ${d.sl.join('<br>• ')}</div>`;
+        }
+        function setInfoLang(l) { infoLang = l; renderInfo(); }
+        function toggleInfo() {
+            const p = document.getElementById('infoPanel');
+            if (p.style.display === 'none') { renderInfo(); openAndScroll('infoPanel','block'); }
+            else p.style.display = 'none';
+        }
+        function toggleQR() {
+            const p = document.getElementById('qrPanel');
+            if (p.style.display === 'none') {
+                document.getElementById('qrImg').src = 'https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=' + encodeURIComponent(APP_URL);
+                openAndScroll('qrPanel','block');
+            } else p.style.display = 'none';
+        }
+
+        /* ================= D2: HER AÇILIŞTA KURULUM ================= */
+        window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; });
+        window.addEventListener('appinstalled', () => { showToast('✅ Uygulama yüklendi'); hideInstallBanner(); });
+        function hideInstallBanner() { document.getElementById('installBanner').classList.remove('show'); }
+        function showInstallBanner() {
+            const iOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+            document.getElementById('installHint').textContent = iOS
+                ? 'iPhone/iPad: Safari → Paylaş (⎋↑) → "Ana Ekrana Ekle"'
+                : (deferredPrompt ? '' : 'Android/PC: Tarayıcı menüsü → "Ana ekrana ekle / Uygulamayı yükle"');
+            document.getElementById('installBanner').classList.add('show');
+        }
+        window.addEventListener('load', () => { setTimeout(showInstallBanner, 1200); });  // her açılışta sor
+        async function installApp() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const c = await deferredPrompt.userChoice;
+                if (c.outcome === 'accepted') { showToast('✅ Yüklendi'); hideInstallBanner(); }
+                deferredPrompt = null;
+            } else {
+                showInstallBanner();
+                const iOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+                showToast(iOS ? '📱 Safari → Paylaş → Ana Ekrana Ekle' : 'ℹ️ Menü → "Ana ekrana ekle"');
+            }
+        }
+
+        /* ================= TEMA/STİL/ZOOM ================= */
+        function applyDark() { document.body.classList.toggle('dark', darkMode); document.getElementById('themeBtn').textContent = darkMode ? '☀️' : '🌙'; applyMushafStyle(); }
+        function toggleDarkMode() { darkMode = !darkMode; localStorage.setItem('ersenbox_dark', darkMode ? '1' : '0'); applyDark(); showToast(darkMode ? T('themeOn') : T('themeOff')); }
+        function applyMushafStyle() {
+            const img = document.getElementById('mushafImage'), cont = document.getElementById('mushafContainer');
+            if (mushafStyle === 'sepya') { img.style.filter = 'sepia(1) contrast(1.05)'; cont.style.background = '#f3e3c3'; cont.style.borderColor = '#b98a2e'; }
+            else if (mushafStyle === 'negatif') { img.style.filter = 'invert(1) hue-rotate(180deg)'; cont.style.background = '#0d1112'; cont.style.borderColor = '#3a917f'; }
+            else { img.style.filter = darkMode ? 'invert(1) hue-rotate(180deg)' : 'none'; cont.style.background = darkMode ? '#101413' : ''; cont.style.borderColor = darkMode ? '#2d7a6b' : ''; }
+        }
+        function setMushafStyle(st) { mushafStyle = st; localStorage.setItem('ersenbox_style', st); updateActiveButtons('style', st); applyMushafStyle(); showToast(T('styleSet', st)); }
+        function applyZoom() { document.documentElement.style.setProperty('--zoom', zoom); document.getElementById('mushafImage').style.width = (zoom * 100) + '%'; document.getElementById('zoomLabel').textContent = '%' + Math.round(zoom * 100); }
+        function zoomChange(d) { zoom = Math.min(1.7, Math.max(0.7, Math.round((zoom + d) * 10) / 10)); localStorage.setItem('ersenbox_zoom', zoom); applyZoom(); }
+
+        /* ================= YER İMİ + SECDE ================= */
+        function saveBookmark() {
+            const bm = localStorage.getItem('ersenbox_bookmark');
+            if (bm && parseInt(bm) === currentPage) { localStorage.removeItem('ersenbox_bookmark'); showToast(T('bookmarkRemoved')); }
+            else { localStorage.setItem('ersenbox_bookmark', currentPage); showToast(T('bookmarkSaved', currentPage)); }
+            updateBookmarkUI();
+        }
+        function updateBookmarkUI() {
+            const bm = localStorage.getItem('ersenbox_bookmark'); const btn = document.getElementById('gotoBookmarkBtn');
+            if (bm) { btn.style.display = 'inline-block'; btn.textContent = T('gotoBookmark', bm); } else btn.style.display = 'none';
+        }
+        function gotoBookmark() { const bm = parseInt(localStorage.getItem('ersenbox_bookmark')); if (bm) { loadPage(bm); window.scrollTo({ top:0, behavior:'smooth' }); } else showToast(T('noBookmark')); }
+        function showSajdaAyat() {
+            const list = document.getElementById('sajdaList'); const show = list.style.display === 'none';
+            if (show) {
+                if (!document.getElementById('sajdaContent').children.length) {
+                    document.getElementById('sajdaContent').innerHTML = SAJDA_AYATS.map((s,i) =>
+                        `<div class="sajda-item" onclick="goSajda(${s[0]},${s[1]})">${i+1}. ${SURAH_TR[s[0]]} Suresi — ${s[0]}:${s[1]}</div>`).join('');
+                }
+                openAndScroll('sajdaList','block');
+            } else list.style.display = 'none';
+        }
+        async function goSajda(s, a) {
+            try { const r = await fetch(`https://api.alquran.cloud/v1/ayah/${s}:${a}/quran-uthmani`); const d = await r.json(); if (d.code === 200) goPage(d.data.page); }
+            catch(e) { showToast(T('loadError')); }
+        }
+
+        /* ================= TECVİD + TAKİP ================= */
+        function colorTajweed(t) {
+            const parts = []; const put = (cls, m) => { parts.push(`<span class="${cls}">${m}</span>`); return `\u0001${parts.length-1}\u0002`; };
+            t = t.replace(/([نم]\u0651[\u064B-\u065F\u0670]*)/g, m => put('tw-ghunnah', m));
+            t = t.replace(/([قطبجد]\u0652)/g, m => put('tw-qalqalah', m));
+            t = t.replace(/(\u0670)/g, m => put('tw-madd', m));
+            t = t.replace(/([آٱ])/g, m => put('tw-madd', m));
+            t = t.replace(/([ًٌٍ])\s*([تثجذزسشصضطظفقك])/g, (a,b,c) => b + put('tw-ikhfa', c));
+            return t.replace(/\u0001(\d+)\u0002/g, (m,i) => parts[i]);
+        }
+        function renderTajweed() {
+            if (!mealCache) return;
+            document.getElementById('tajweedContainer').innerHTML = mealCache.ar.map((a,i) =>
+                `<div class="tajweed-ayah" data-idx="${i}"><span class="tajweed-num">${a.surah.number}:${a.numberInSurah}</span> ${colorTajweed(a.text)}</div>`).join('');
+        }
+        function toggleTajweed() {
+            settings.tajweed = !settings.tajweed; saveSettings();
+            document.getElementById('tajweedBtn').classList.toggle('active', settings.tajweed);
+            document.getElementById('mushafContainer').style.display = settings.tajweed ? 'none' : 'flex';
+            document.querySelector('.zoom-bar').style.display = settings.tajweed ? 'none' : 'flex';
+            document.getElementById('tajweedContainer').style.display = settings.tajweed ? 'block' : 'none';
+            if (settings.tajweed) { renderTajweed(); if (!mealCache) loadMeal(currentPage); }
+            showToast(settings.tajweed ? T('tajweedOn') : T('tajweedOff'));
+        }
+        function toggleFollow() {
+            settings.follow = !settings.follow; saveSettings();
+            document.getElementById('followBtn').classList.toggle('active', settings.follow);
+            if (settings.follow) highlightAyah(currentAyahIndex);
+            else document.querySelectorAll('.playing').forEach(el => el.classList.remove('playing'));
+            showToast(settings.follow ? T('followOn') : T('followOff'));
+        }
+        function highlightAyah(index) {
+            document.querySelectorAll('.playing').forEach(el => el.classList.remove('playing'));
+            if (!settings.follow) return;
+            [`.ayah[data-idx="${index}"]`, `.tajweed-ayah[data-idx="${index}"]`, `.latin-item[data-idx="${index}"]`].forEach(sel => {
+                const el = document.querySelector(sel);
+                if (el) { el.classList.add('playing'); el.scrollIntoView({ block:'center', behavior:'smooth' }); }
+            });
+        }
+
+        /* ================= AYARLAR ================= */
+        function toggleSettings() {
+            const p = document.getElementById('settingsPanel');
+            if (!p.classList.contains('active')) { p.classList.add('active'); openAndScroll('settingsPanel','block'); updateOfflineStatus(); }
+            else p.classList.remove('active');
+        }
+        function updateActiveButtons(group, value) {
+            document.querySelectorAll(`[data-group="${group}"]`).forEach(b => b.classList.toggle('active', String(b.dataset.value) === String(value)));
+        }
+        function renderReciters() {
+            document.getElementById('reciterOptions').innerHTML = Object.keys(RECITERS).map(id =>
+                `<button class="setting-option" data-group="reciter" data-value="${id}" onclick="setReciter('${id}')">${RECITERS[id].name}</button>`).join('');
+            updateActiveButtons('reciter', settings.reciter);
+        }
+        function setMeal(meal) { settings.meal = meal; saveSettings(); updateActiveButtons('meal', meal); openAndScroll('mealContainer','block'); loadMeal(currentPage); showToast(T('mealSet', meal)); }
+        function setReciter(r) { settings.reciter = r; saveSettings(); updateActiveButtons('reciter', r); if (isPlaying) playAyah(currentAyahIndex); showToast(T('reciterSet', RECITERS[r].name)); }
+        function setSpeed(s) { settings.speed = s; saveSettings(); document.getElementById('audioEl').playbackRate = s; updateActiveButtons('speed', s); showToast(T('speedSet', s)); }
+        function setFont(f) { settings.font = f; saveSettings(); document.documentElement.style.setProperty('--arabic-font', FONT_MAP[f] || FONT_MAP.uthmani); updateActiveButtons('font', f); showToast(T('fontSet', f)); }
+        function setOfflineQuality(q) { offlineQuality = q; localStorage.setItem('ersenbox_oq', q); updateActiveButtons('oq', q); showToast(q === 'ekonomi' ? '🪶 Ekonomik' : '💎 Yüksek'); }
+
+        /* ================= OFFLINE ================= */
+        async function fetchAndCache(url) { try { const r = await fetch(url); return r.ok || r.type === 'opaque'; } catch(e) { return false; } }
+        async function cacheAudioForAyah(n) {
+            const rec = RECITERS[settings.reciter] || { br:[64] };
+            const list = offlineQuality === 'ekonomi' ? [64] : rec.br;
+            for (const br of list) if (await fetchAndCache(`https://cdn.islamic.network/quran/audio/${br}/${settings.reciter}/${n}.mp3`)) return true;
+            return false;
+        }
+        async function downloadPageOffline(n) {
+            await fetchAndCache(offlineQuality === 'ekonomi' ? pageSources(n)[1] : pageSources(n)[0]);
+            let ayahs = [];
+            try { const r = await fetch(`https://api.alquran.cloud/v1/page/${n}/quran-uthmani`); const d = await r.json(); if (d.code === 200) ayahs = d.data.ayahs; } catch(e) {}
+            await fetchAndCache(`https://api.alquran.cloud/v1/page/${n}/${settings.meal}`);
+            await fetchAndCache(`https://api.alquran.cloud/v1/page/${n}/en.transliteration`);
+            for (const a of ayahs) await cacheAudioForAyah(a.number);
+        }
+        async function downloadPageOfflineUI() { if (!navigator.onLine) { showToast('❌'); return; } await downloadPageOffline(currentPage); showToast(`✅ Sayfa ${currentPage} offline`); updateOfflineStatus(); }
+        async function downloadRangeOffline(s, e) {
+            if (offlineBusy || !navigator.onLine) return;
+            offlineBusy = true; offlineCancel = false;
+            for (let n = s; n <= e; n++) {
+                if (offlineCancel) break;
+                await downloadPageOffline(n);
+                const p = Math.round(((n - s + 1) / (e - s + 1)) * 100);
+                document.getElementById('offlineBar').style.width = p + '%';
+                document.getElementById('offlineStatus').textContent = `⬇️ ${n}/${e} (%${p})`;
+            }
+            offlineBusy = false;
+            showToast('✅ Offline tamam'); updateOfflineStatus();
+        }
+        function cancelOffline() { offlineCancel = true; }
+        async function clearAllCache() { const k = await caches.keys(); await Promise.all(k.map(x => caches.delete(x))); updateOfflineStatus(); showToast('🗑️ Temizlendi'); }
+        async function updateOfflineStatus() {
+            try { const est = await navigator.storage.estimate(); document.getElementById('offlineStatus').textContent = `💾 ${(est.usage/1048576).toFixed(1)} MB / ${(est.quota/1048576).toFixed(0)} MB`; } catch(e) {}
+        }
+
+        /* ================= D5: KAYNAKLI LATİNCE ================= */
+        // Güvenilir kaynak (en.transliteration) → Türkçe okunuşa güvenli çevrim
+        function trFromEn(s) {
+            const fix = (str, re, rep) => str.replace(re, (m) => (m[0] === m[0].toUpperCase() && m[0] !== m[0].toLowerCase()) ? rep.charAt(0).toUpperCase() + rep.slice(1) : rep);
+            const map = [
+                [/sh/gi,'ş'], [/kh/gi,'h'], [/th/gi,'s'], [/dh/gi,'z'], [/gh/gi,'g'], [/ch/gi,'ç'],
+                [/aa/gi,'â'], [/ee/gi,'î'], [/oo/gi,'û'],
+                [/q/gi,'k'], [/w/gi,'v'], [/j/gi,'c']
+            ];
+            for (const [re, rep] of map) s = fix(s, re, rep);
+            return s;
+        }
+        function setLatinMode(mode) { latinMode = mode; localStorage.setItem('ersenbox_latinmode', mode); updateActiveButtons('latinmode', mode); lastLatinPage = 0; loadLatin(currentPage); }
+        async function loadLatin(pageNum) {
+            const content = document.getElementById('latinContent');
+            content.innerHTML = `<p style="text-align:center;color:var(--muted);">${T('loading')}</p>`;
+            try {
+                const res = await fetch(`https://api.alquran.cloud/v1/page/${pageNum}/en.transliteration`);
+                const data = await res.json();
+                if (data.code === 200 && data.data && data.data.ayahs) {
+                    lastLatinPage = pageNum;
+                    content.innerHTML = data.data.ayahs.map((a,i) => {
+                        const text = latinMode === 'tr' ? trFromEn(a.text) : a.text;
+                        return `<div class="latin-item" data-idx="${i}"><b>${a.surah.number}:${a.numberInSurah}</b>${text}</div>`;
+                    }).join('');
+                } else content.innerHTML = `<p>${T('latinError')}</p>`;
+            } catch(e) { content.innerHTML = `<p>${T('latinError')}</p>`; }
+        }
+        function toggleLatin() {
+            latinVisible = !latinVisible;
+            localStorage.setItem('ersenbox_latin', latinVisible ? '1' : '0');
+            document.getElementById('latinBtn').classList.toggle('on', latinVisible);
+            if (latinVisible) { openAndScroll('latinContainer','block'); if (lastLatinPage !== currentPage) loadLatin(currentPage); }
+            else document.getElementById('latinContainer').style.display = 'none';
+        }
+        function toggleMeal() {
+            const c = document.getElementById('mealContainer');
+            if (c.style.display === 'none') openAndScroll('mealContainer','block');
+            else c.style.display = 'none';
+        }
+
+        /* ================= SAYFA ================= */
+        const pad3 = n => String(n).padStart(3, '0');
+        const pageSources = n => [
+            `https://cdn.jsdelivr.net/gh/GovarJabbar/Quran-PNG@master/${pad3(n)}.png`,
+            `https://quran.islam-db.com/data/pages/quranpages_1024/images/page${pad3(n)}.png`,
+            `https://raw.githubusercontent.com/GovarJabbar/Quran-PNG/master/${pad3(n)}.png`
+        ];
+        function prefetchNeighbors(p) { [p+1,p+2,p-1].forEach(n => { if (n >= 1 && n <= totalPages) { const im = new Image(); im.src = pageSources(n)[0]; } }); }
+        async function loadPage(pageNum) {
+            if (pageNum < 1 || pageNum > totalPages) return;
+            const token = ++loadToken;
+            currentPage = pageNum;
+            localStorage.setItem('ersenbox_lastPage', pageNum);
+            updateTexts();
+            document.getElementById('pageDisplay').textContent = `${pageNum} / ${totalPages}`;
+            document.getElementById('prevBtn').disabled = (pageNum === 1);
+            document.getElementById('nextBtn').disabled = (pageNum === totalPages);
+            const loader = document.getElementById('loader'), img = document.getElementById('mushafImage');
+            loader.style.display = 'block'; img.classList.remove('loaded'); img.style.display = 'none';
+            const sources = pageSources(pageNum);
+            let idx = 0, timer = null;
+            const fail = () => { if (token !== loadToken) return; clearTimeout(timer); idx++; nextSource(); };
+            const nextSource = () => {
+                if (token !== loadToken) return;
+                if (idx >= sources.length) { loader.style.display = 'none'; showToast(T('loadError')); return; }
+                img.src = sources[idx]; timer = setTimeout(fail, 8000);
+            };
+            img.onload = () => {
+                if (token !== loadToken) return;
+                clearTimeout(timer); loader.style.display = 'none';
+                img.style.display = 'block'; img.classList.add('loaded');
+                applyZoom(); applyMushafStyle();
+                showToast(T('loaded', pageNum));
+                prefetchNeighbors(pageNum);
+            };
+            img.onerror = fail;
+            nextSource();
+            loadMeal(pageNum);
+            if (latinVisible) loadLatin(pageNum);
+        }
+        function nextPage() { if (currentPage < totalPages) loadPage(currentPage + 1); }
+        function previousPage() { if (currentPage > 1) loadPage(currentPage - 1); }
+
+        /* ================= SES ================= */
+        function toggleAudio() {
+            const p = document.getElementById('audioPlayer');
+            if (p.style.display === 'none') { openAndScroll('audioPlayer','block'); if (!isPlaying && pageAyahs.length) playAyah(0); }
+            else p.style.display = 'none';
+        }
+        function playAyah(index) {
+            if (index < 0 || index >= pageAyahs.length) return;
+            currentAyahIndex = index; brIndex = 0; autoPlay = true;
+            setAudioSrc(); highlightAyah(index);
+        }
+        function setAudioSrc() {
+            const rec = RECITERS[settings.reciter] || { br:[128,64] };
+            const ayah = pageAyahs[currentAyahIndex];
+            const br = rec.br[Math.min(brIndex, rec.br.length - 1)];
+            const audio = document.getElementById('audioEl');
+            audio.src = `https://cdn.islamic.network/quran/audio/${br}/${settings.reciter}/${ayah.number}.mp3`;
+            audio.playbackRate = settings.speed;
+            audio.play().catch(() => {});
+            isPlaying = true;
+            document.getElementById('playPauseBtn').textContent = '⏸';
+        }
+        function togglePlay() {
+            const audio = document.getElementById('audioEl');
+            if (isPlaying) { audio.pause(); isPlaying = false; autoPlay = false; document.getElementById('playPauseBtn').textContent = '▶'; }
+            else if (audio.src) { audio.play(); isPlaying = true; autoPlay = true; document.getElementById('playPauseBtn').textContent = '⏸'; }
+            else if (pageAyahs.length) playAyah(0);
+        }
+        function nextAyah() { if (currentAyahIndex < pageAyahs.length - 1) playAyah(currentAyahIndex + 1); }
+        function previousAyah() { if (currentAyahIndex > 0) playAyah(currentAyahIndex - 1); }
+        function autoNextPage() {
+            const endPage = SURAH_END[(currentSurah || 1) - 1];
+            if (currentPage < endPage) loadPage(currentPage + 1);
+            else { autoPlay = false; showToast(T('surahEnd')); }
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message; toast.classList.add('show');
+            clearTimeout(toast._t); toast._t = setTimeout(() => toast.classList.remove('show'), 2500);
+        }
+
+        /* ================= BAŞLANGIÇ ================= */
+        const audioEl = document.getElementById('audioEl');
+        audioEl.addEventListener('ended', () => { if (currentAyahIndex < pageAyahs.length - 1) playAyah(currentAyahIndex + 1); else if (autoPlay) autoNextPage(); });
+        audioEl.addEventListener('error', () => {
+            const rec = RECITERS[settings.reciter] || { br:[128] };
+            brIndex++;
+            if (brIndex < rec.br.length) setAudioSrc();
+            else { showToast(T('audioFail', RECITERS[settings.reciter] ? RECITERS[settings.reciter].name : settings.reciter)); isPlaying = false; }
+        });
+        audioEl.addEventListener('timeupdate', (e) => {
+            const t = e.target, d = t.duration || 0;
+            document.getElementById('audioProgressBar').style.width = d ? `${(t.currentTime/d)*100}%` : '0%';
+            const f = s => `${Math.floor(s/60)}:${String(Math.floor(s%60)).padStart(2,'0')}`;
+            const a = pageAyahs[currentAyahIndex];
+            document.getElementById('audioInfo').textContent = `${RECITERS[settings.reciter] ? RECITERS[settings.reciter].name : ''}${a ? ` ${a.surah.number}:${a.numberInSurah}` : ''} - ${f(t.currentTime)} / ${f(d)}`;
+        });
+        if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').catch(err => console.error('[SW]', err));
+        if (navigator.storage && navigator.storage.persist) navigator.storage.persist();
+        window.addEventListener('online', () => showToast('🟢 Online'));
+        window.addEventListener('offline', () => showToast('🔴 Offline mod'));
+
+        applyDark();
+        document.getElementById('langBtn').textContent = FLAG[currentLang];
+        renderReciters();
+        updateActiveButtons('speed', settings.speed);
+        updateActiveButtons('meal', settings.meal);
+        updateActiveButtons('font', settings.font);
+        updateActiveButtons('style', mushafStyle);
+        updateActiveButtons('latinmode', latinMode);
+        updateActiveButtons('oq', offlineQuality);
+        document.getElementById('tajweedBtn').classList.toggle('active', !!settings.tajweed);
+        document.getElementById('followBtn').classList.toggle('active', !!settings.follow);
+        document.documentElement.style.setProperty('--arabic-font', FONT_MAP[settings.font] || FONT_MAP.uthmani);
+        if (settings.tajweed) { document.getElementById('mushafContainer').style.display = 'none'; document.querySelector('.zoom-bar').style.display = 'none'; document.getElementById('tajweedContainer').style.display = 'block'; }
+        if (latinVisible) { document.getElementById('latinContainer').style.display = 'block'; document.getElementById('latinBtn').classList.add('on'); }
+        applyZoom(); updateTexts(); updateOfflineStatus();
+
+        loadPage(parseInt(localStorage.getItem('ersenbox_lastPage')) || 1);
+    </script>
+</body>
+</html>

@@ -1,0 +1,113 @@
+/* Ersenbox Service Worker - v11 (duzeltildi) */
+const CACHE_NAME = 'ersenbox-v11';
+const STATIC_ASSETS = ['./', './index.html', './manifest.json'];
+const CACHE_HOSTS = [
+  'cdn.jsdelivr.net',
+  'quran.islam-db.com',
+  'raw.githubusercontent.com',
+  'cdn.islamic.network',
+  'fonts.googleapis.com',
+  'fonts.gstatic.com',
+  'api.qrserver.com'
+];
+
+self.addEventListener('install', (e) => {
+  e.waitUntil(
+    caches.open(CACHE_NAME).then((c) => c.addAll(STATIC_ASSETS))
+  );
+  self.skipWaiting();
+});
+
+self.addEventListener('activate', (e) => {
+  e.waitUntil(
+    caches.keys().then((keys) =>
+      Promise.all(
+        keys.filter((k) => k !== CACHE_NAME).map((k) => caches.delete(k))
+      )
+    )
+  );
+  self.clients.claim();
+});
+
+self.addEventListener('fetch', (e) => {
+  const url = e.request.url;
+
+  /* 1) ANA SAYFA (navigation): once network, olmazsa ONBELLEK -> ERR_FAILED artik cikmaz */
+  if (e.request.mode === 'navigate') {
+    e.respondWith(
+      fetch(e.request)
+        .then((response) => {
+          const copy = response.clone();
+          caches.open(CACHE_NAME).then((c) => c.put('./index.html', copy));
+          return response;
+        })
+        .catch(() =>
+          caches.match('./index.html').then((r) => r || caches.match('./'))
+        )
+    );
+    return;
+  }
+
+  /* 2) CDN (ses/font): once onbellek, sonra network; hata varsa 503 (HTML DONDURMEZ) */
+  if (CACHE_HOSTS.some((h) => url.includes(h))) {
+    e.respondWith(
+      caches
+        .match(e.request)
+        .then(
+          (cached) =>
+            cached ||
+            fetch(e.request).then((response) => {
+              if (response && (response.ok || response.type === 'opaque')) {
+                const copy = response.clone();
+                caches.open(CACHE_NAME).then((c) => c.put(e.request, copy));
+              }
+              return response;
+            })
+        )
+        .catch(() => new Response(null, { status: 503, statusText: 'offline' }))
+    );
+    return;
+  }
+
+  /* 3) API: once network, olmazsa onbellek, o da yoksa JSON hata */
+  if (url.includes('api.alquran.cloud')) {
+    e.respondWith(
+      fetch(e.request)
+        .then((response) => {
+          if (response.ok) {
+            const copy = response.clone();
+            caches.open(CACHE_NAME).then((c) => c.put(e.request, copy));
+          }
+          return response;
+        })
+        .catch(() =>
+          caches.match(e.request).then(
+            (r) =>
+              r ||
+              new Response(
+                JSON.stringify({ code: 503, status: 'offline', data: null }),
+                { status: 503, headers: { 'Content-Type': 'application/json' } }
+              )
+          )
+        )
+    );
+    return;
+  }
+
+  /* 4) Ayni origin diger istekler */
+  e.respondWith(
+    caches.match(e.request).then(
+      (cached) =>
+        cached ||
+        fetch(e.request)
+          .then((response) => {
+            if (response && response.ok) {
+              const copy = response.clone();
+              caches.open(CACHE_NAME).then((c) => c.put(e.request, copy));
+            }
+            return response;
+          })
+          .catch(() => new Response(null, { status: 503, statusText: 'offline' }))
+    )
+  );
+});
